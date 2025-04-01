@@ -17,22 +17,21 @@ namespace WindowsFormsApp4
     {
         private DatabaseConnectionManager _connectionManager = new DatabaseConnectionManager();
         private MySQLQerty mySQLQerty = new MySQLQerty();
-        private MySqlConnection _mySqlConnection;
-        string str;
         public Form1()
         {
             InitializeComponent();
         }
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
+            await _connectionManager.ConnectionOpen();
             if (_connectionManager.IsConnected)
             {
                 var username = textBoxLogin.Text;
                 var password = textBoxPassword.Text;
-                bool returned = mySQLQerty.AccessLoginAndPassword(username, password, _connectionManager.GetConnection());
+                bool returned = Convert.ToBoolean(await mySQLQerty.AccessLoginAndPassword(username, password, _connectionManager.GetConnection()));
                 if (returned)
                 {
-                    IDataSave.idEmployees = mySQLQerty.get_EmployyesAccess(username, _connectionManager.GetConnection());
+                    IDataSave.idEmployees = await mySQLQerty.get_EmployyesAccess(username, _connectionManager.GetConnection());
                     Form2 f = new Form2();
                     f.Show();
                     this.Hide();
@@ -46,14 +45,16 @@ namespace WindowsFormsApp4
             {
                 MessageBox.Show("Нет подключения к базе данных!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            await _connectionManager.ConnectionClose();
         }
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
-            _connectionManager.Connection();
-            if (!_connectionManager.Connection())
+            await _connectionManager.ConnectionOpen();
+            if (await _connectionManager.ConnectionOpen() == false)
             {
                 MessageBox.Show("Не удалось подключиться к базе данных!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            await _connectionManager.ConnectionClose();
         }
     }
 }

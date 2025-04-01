@@ -98,6 +98,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddSQLOwnerAndPets.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddSQLOwnerAndPets.Designer.cs">
+      <DependentUpon>AddSQLOwnerAndPets.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChekSQL.cs" />
     <Compile Include="DataSaveInerface.cs" />
     <Compile Include="Form2.cs">
@@ -120,6 +126,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddSQLOwnerAndPets.resx">
+      <DependentUpon>AddSQLOwnerAndPets.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
