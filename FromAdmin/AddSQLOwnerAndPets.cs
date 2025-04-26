@@ -29,7 +29,7 @@ namespace WindowsFormsApp4
             await _connectionManager.ConnectionOpen();
             if(isAdd)
             {
-                if(txtFirstName.Text != "" || txtSecondName.Text != "" || txtCity.Text != "" || txtAddres.Text != "" || txtPetName.Text != "" || txtPetName.Text != "" || txtSpecial.Text != "" || txtBreed.Text != "")
+                if(txtFirstName.Text != "" || txtSecondName.Text != "" || txtAddres.Text != "" || txtPetName.Text != "" || txtPetName.Text != "" || txtSpecial.Text != "" || txtBreed.Text != "")
                 {
                     IDataSave.OwnerPets OP = new IDataSave.OwnerPets()
                     {
@@ -38,7 +38,7 @@ namespace WindowsFormsApp4
                         middleName = txtMiddleNAme.Text,
                         numberPhone = txtNumberTel.Text,
                         email = txtEmail.Text,
-                        city = txtCity.Text,
+                        //city = txtCity.Text,
                         address = txtAddres.Text,
                     };
                     IDataSave.Pets p = new IDataSave.Pets
@@ -47,7 +47,7 @@ namespace WindowsFormsApp4
                         species = txtSpecial.Text,
                         breed = txtBreed.Text,
                         color = txtColar.Text,
-                        sex = txtSex.Text,
+                        //sex = txtSex.Text,
                         mark = txtMark.Text
                     };
                     await mySQLQerty.AddDateOwnerPets(_connectionManager.GetConnection(), p, OP);
@@ -75,14 +75,14 @@ namespace WindowsFormsApp4
                 txtMiddleNAme.Text = OP.middleName;
                 txtNumberTel.Text = OP.numberPhone;
                 txtEmail.Text = OP.email;
-                txtCity.Text = OP.city;
+                //txtCity.Text = OP.city;
                 txtAddres.Text = OP.address;
                 IDataSave.Pets P = await mySQLQerty.GetStructureTablePets(_connectionManager.GetConnection());
                 txtPetName.Text = P.petName;
                 txtSpecial.Text = P.species;
                 txtBreed.Text = P.breed;
                 txtColar.Text = P.color;
-                txtSex.Text = P.sex;
+                //txtSex.Text = P.sex;
                 txtMark.Text = P.mark;
                 await _connectionManager.ConnectionClose();
             }

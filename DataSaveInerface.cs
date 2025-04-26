@@ -10,9 +10,11 @@ namespace WindowsFormsApp4
     internal class IDataSave
     {
         public static object idEmployees { get; set; }
+        public static int LevelAccess { get; set; }
         public static string idStr { get; set; }
         public static bool isAdd { get; set; }
         public static object idPet { get; set; }
+        public static string[] NameDiagnosis { get; set; }
         public struct OwnerPets
         {
             public string firstName;

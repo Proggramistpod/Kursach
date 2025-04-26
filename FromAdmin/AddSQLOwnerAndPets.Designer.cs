@@ -33,7 +33,6 @@
             this.txtMiddleNAme = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtCity = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtAddres = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -48,7 +47,6 @@
             this.txtMark = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.txtSex = new System.Windows.Forms.TextBox();
             this.txtColar = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -57,6 +55,9 @@
             this.txtPetName = new System.Windows.Forms.TextBox();
             this.txtSpecial = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -84,8 +85,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.txtCity);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.txtAddres);
             this.groupBox1.Controls.Add(this.label4);
@@ -113,13 +114,6 @@
             this.label6.Size = new System.Drawing.Size(37, 13);
             this.label6.TabIndex = 15;
             this.label6.Text = "Город";
-            // 
-            // txtCity
-            // 
-            this.txtCity.Location = new System.Drawing.Point(6, 226);
-            this.txtCity.Name = "txtCity";
-            this.txtCity.Size = new System.Drawing.Size(127, 20);
-            this.txtCity.TabIndex = 14;
             // 
             // label7
             // 
@@ -198,11 +192,12 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.radioButton2);
+            this.groupBox2.Controls.Add(this.radioButton1);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.txtMark);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.txtSex);
             this.groupBox2.Controls.Add(this.txtColar);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label13);
@@ -220,7 +215,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 156);
+            this.label9.Location = new System.Drawing.Point(6, 136);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(54, 13);
             this.label9.TabIndex = 13;
@@ -228,16 +223,16 @@
             // 
             // txtMark
             // 
-            this.txtMark.Location = new System.Drawing.Point(6, 172);
+            this.txtMark.Location = new System.Drawing.Point(6, 152);
             this.txtMark.Multiline = true;
             this.txtMark.Name = "txtMark";
-            this.txtMark.Size = new System.Drawing.Size(342, 74);
+            this.txtMark.Size = new System.Drawing.Size(342, 94);
             this.txtMark.TabIndex = 11;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(56, 136);
+            this.label10.Location = new System.Drawing.Point(291, 104);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(27, 13);
             this.label10.TabIndex = 10;
@@ -251,13 +246,6 @@
             this.label11.Size = new System.Drawing.Size(39, 13);
             this.label11.TabIndex = 9;
             this.label11.Text = "Окрас";
-            // 
-            // txtSex
-            // 
-            this.txtSex.Location = new System.Drawing.Point(6, 133);
-            this.txtSex.Name = "txtSex";
-            this.txtSex.Size = new System.Drawing.Size(44, 20);
-            this.txtSex.TabIndex = 8;
             // 
             // txtColar
             // 
@@ -324,6 +312,41 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Ваши Визиты",
+            "Визиты",
+            "Сервис",
+            "Владельцы животных"});
+            this.comboBox1.Location = new System.Drawing.Point(6, 226);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(131, 21);
+            this.comboBox1.TabIndex = 30;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(272, 126);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(34, 17);
+            this.radioButton1.TabIndex = 14;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "М";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(312, 126);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(36, 17);
+            this.radioButton2.TabIndex = 15;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Ж";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
             // AddSQLOwnerAndPets
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -358,7 +381,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtCity;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtAddres;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -366,7 +388,6 @@
         private System.Windows.Forms.TextBox txtMark;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox txtSex;
         private System.Windows.Forms.TextBox txtColar;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
@@ -375,5 +396,8 @@
         private System.Windows.Forms.TextBox txtPetName;
         private System.Windows.Forms.TextBox txtSpecial;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton1;
     }
 }

@@ -22,20 +22,20 @@ namespace WindowsFormsApp4
         }
         public async Task<bool> ConnectionOpen()
         {
-            try
-            {
-                string connectionString = ConfigurationManager.ConnectionStrings["vet_clinic"].ConnectionString;
-                _mySqlConnection = new MySqlConnection(connectionString);
-                await _mySqlConnection.OpenAsync();
-                IsConnected = true;
-                return true; 
-            }
-            catch (MySqlException ex)
-            {
-                IsConnected = false;
-                Console.WriteLine($"Ошибка подключения: {ex.Message}"); 
-                return false; 
-            }
+                try
+                {
+                    string connectionString = ConfigurationManager.ConnectionStrings["vet_clinic"].ConnectionString;
+                    _mySqlConnection = new MySqlConnection(connectionString);
+                    await _mySqlConnection.OpenAsync();
+                    IsConnected = true;
+                    return true; 
+                }
+                catch (MySqlException ex)
+                {
+                    IsConnected = false;
+                    Console.WriteLine($"Ошибка подключения: {ex.Message}"); 
+                    return false; 
+                }
         }
         public MySqlConnection GetConnection()
         {

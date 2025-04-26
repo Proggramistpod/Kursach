@@ -98,19 +98,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddSQLOwnerAndPets.cs">
+    <Compile Include="FromAdmin\AddSQLOwnerAndPets.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddSQLOwnerAndPets.Designer.cs">
+    <Compile Include="FromAdmin\AddSQLOwnerAndPets.Designer.cs">
       <DependentUpon>AddSQLOwnerAndPets.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FromAdmin\Administrator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FromAdmin\Administrator.Designer.cs">
+      <DependentUpon>Administrator.cs</DependentUpon>
     </Compile>
     <Compile Include="ChekSQL.cs" />
     <Compile Include="DataSaveInerface.cs" />
-    <Compile Include="Form2.cs">
+    <Compile Include="FormVet\DiagnosisPet.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <Compile Include="FormVet\DiagnosisPet.Designer.cs">
+      <DependentUpon>DiagnosisPet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FromAdmin\Employees.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FromAdmin\Employees.Designer.cs">
+      <DependentUpon>Employees.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormVet\Veterinar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormVet\Veterinar.Designer.cs">
+      <DependentUpon>Veterinar.cs</DependentUpon>
     </Compile>
     <Compile Include="MySQLQerty.cs" />
     <Compile Include="DataSet1.Designer.cs">
@@ -118,22 +136,31 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="OtherForm\Atorisation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="OtherForm\Atorisation.Designer.cs">
+      <DependentUpon>Atorisation.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddSQLOwnerAndPets.resx">
+    <EmbeddedResource Include="FromAdmin\AddSQLOwnerAndPets.resx">
       <DependentUpon>AddSQLOwnerAndPets.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="FromAdmin\Administrator.resx">
+      <DependentUpon>Administrator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <EmbeddedResource Include="FormVet\DiagnosisPet.resx">
+      <DependentUpon>DiagnosisPet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FromAdmin\Employees.resx">
+      <DependentUpon>Employees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OtherForm\Atorisation.resx">
+      <DependentUpon>Atorisation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormVet\Veterinar.resx">
+      <DependentUpon>Veterinar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
