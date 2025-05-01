@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace WindowsFormsApp4 {
+namespace WindowsFormsApp4.Configs {
     
     
     /// <summary>

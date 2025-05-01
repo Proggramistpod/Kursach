@@ -42,5 +42,10 @@ namespace WindowsFormsApp4
         {
             NameDiagnosis = cmbBox_Diagnosis.SelectedItem.ToString();
         }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

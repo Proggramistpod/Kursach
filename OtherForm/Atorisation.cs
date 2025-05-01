@@ -59,12 +59,18 @@ namespace WindowsFormsApp4
             {
                 MessageBox.Show("Не удалось подключиться к базе данных!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            await _mySQLQerty.GetListName(_connectionManager.GetConnection());
             await _connectionManager.ConnectionClose();
         }
 
         private void label3_Click(object sender, EventArgs e)
         {
              
+        }
+
+        private void xToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

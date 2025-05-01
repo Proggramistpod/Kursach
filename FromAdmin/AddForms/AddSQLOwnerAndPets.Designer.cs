@@ -32,6 +32,7 @@
             this.txtSecondName = new System.Windows.Forms.TextBox();
             this.txtMiddleNAme = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbBox_City = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.txtAddres = new System.Windows.Forms.TextBox();
@@ -43,6 +44,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmbBox_Species = new System.Windows.Forms.ComboBox();
+            this.rdBtnSexF = new System.Windows.Forms.RadioButton();
+            this.rdBtnSexM = new System.Windows.Forms.RadioButton();
             this.label9 = new System.Windows.Forms.Label();
             this.txtMark = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -53,11 +57,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txtBreed = new System.Windows.Forms.TextBox();
             this.txtPetName = new System.Windows.Forms.TextBox();
-            this.txtSpecial = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -85,7 +85,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.cmbBox_City);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.txtAddres);
@@ -105,6 +105,16 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Хозяин";
+            // 
+            // cmbBox_City
+            // 
+            this.cmbBox_City.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.cmbBox_City.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBox_City.FormattingEnabled = true;
+            this.cmbBox_City.Location = new System.Drawing.Point(6, 226);
+            this.cmbBox_City.Name = "cmbBox_City";
+            this.cmbBox_City.Size = new System.Drawing.Size(131, 21);
+            this.cmbBox_City.TabIndex = 30;
             // 
             // label6
             // 
@@ -192,8 +202,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.radioButton2);
-            this.groupBox2.Controls.Add(this.radioButton1);
+            this.groupBox2.Controls.Add(this.cmbBox_Species);
+            this.groupBox2.Controls.Add(this.rdBtnSexF);
+            this.groupBox2.Controls.Add(this.rdBtnSexM);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.txtMark);
             this.groupBox2.Controls.Add(this.label10);
@@ -204,13 +215,44 @@
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.txtBreed);
             this.groupBox2.Controls.Add(this.txtPetName);
-            this.groupBox2.Controls.Add(this.txtSpecial);
             this.groupBox2.Location = new System.Drawing.Point(366, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(348, 252);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Питомец";
+            // 
+            // cmbBox_Species
+            // 
+            this.cmbBox_Species.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.cmbBox_Species.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBox_Species.FormattingEnabled = true;
+            this.cmbBox_Species.Location = new System.Drawing.Point(7, 54);
+            this.cmbBox_Species.Name = "cmbBox_Species";
+            this.cmbBox_Species.Size = new System.Drawing.Size(99, 21);
+            this.cmbBox_Species.TabIndex = 31;
+            // 
+            // rdBtnSexF
+            // 
+            this.rdBtnSexF.AutoSize = true;
+            this.rdBtnSexF.Location = new System.Drawing.Point(306, 110);
+            this.rdBtnSexF.Name = "rdBtnSexF";
+            this.rdBtnSexF.Size = new System.Drawing.Size(36, 17);
+            this.rdBtnSexF.TabIndex = 15;
+            this.rdBtnSexF.TabStop = true;
+            this.rdBtnSexF.Text = "Ж";
+            this.rdBtnSexF.UseVisualStyleBackColor = true;
+            // 
+            // rdBtnSexM
+            // 
+            this.rdBtnSexM.AutoSize = true;
+            this.rdBtnSexM.Location = new System.Drawing.Point(266, 110);
+            this.rdBtnSexM.Name = "rdBtnSexM";
+            this.rdBtnSexM.Size = new System.Drawing.Size(34, 17);
+            this.rdBtnSexM.TabIndex = 14;
+            this.rdBtnSexM.TabStop = true;
+            this.rdBtnSexM.Text = "М";
+            this.rdBtnSexM.UseVisualStyleBackColor = true;
             // 
             // label9
             // 
@@ -232,7 +274,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(291, 104);
+            this.label10.Location = new System.Drawing.Point(285, 88);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(27, 13);
             this.label10.TabIndex = 10;
@@ -295,13 +337,6 @@
             this.txtPetName.Size = new System.Drawing.Size(100, 20);
             this.txtPetName.TabIndex = 0;
             // 
-            // txtSpecial
-            // 
-            this.txtSpecial.Location = new System.Drawing.Point(6, 55);
-            this.txtSpecial.Name = "txtSpecial";
-            this.txtSpecial.Size = new System.Drawing.Size(100, 20);
-            this.txtSpecial.TabIndex = 1;
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(614, 271);
@@ -311,41 +346,6 @@
             this.button1.Text = "Добавить";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Ваши Визиты",
-            "Визиты",
-            "Сервис",
-            "Владельцы животных"});
-            this.comboBox1.Location = new System.Drawing.Point(6, 226);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(131, 21);
-            this.comboBox1.TabIndex = 30;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(272, 126);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(34, 17);
-            this.radioButton1.TabIndex = 14;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "М";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(312, 126);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(36, 17);
-            this.radioButton2.TabIndex = 15;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Ж";
-            this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // AddSQLOwnerAndPets
             // 
@@ -394,10 +394,10 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox txtBreed;
         private System.Windows.Forms.TextBox txtPetName;
-        private System.Windows.Forms.TextBox txtSpecial;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.ComboBox cmbBox_City;
+        private System.Windows.Forms.RadioButton rdBtnSexF;
+        private System.Windows.Forms.RadioButton rdBtnSexM;
+        private System.Windows.Forms.ComboBox cmbBox_Species;
     }
 }

@@ -23,18 +23,7 @@ namespace WindowsFormsApp4
         private async void cmbBox1_SelectedIndexChangedTable(object sender, EventArgs e)
         {
             await _connectionManager.ConnectionOpen();
-            switch (cmbBox_Table.SelectedIndex)
-            {
-                case 0:
-                    await mySQLQerty.ShowDataGrid_Visists(_connectionManager.GetConnection(), dataGridView1);
-                    break;
-                case 1:
-                    await mySQLQerty.ShowDataGrisView_AllVisits(_connectionManager.GetConnection(), dataGridView1);
-                    break;
-                case 2:
-                    await mySQLQerty.ShowDataGrisView_TypeService(_connectionManager.GetConnection(), dataGridView1);
-                    break;
-            }
+            UpdateRecord();
             await _connectionManager.ConnectionClose();
         }
 
@@ -49,6 +38,7 @@ namespace WindowsFormsApp4
             {
                 object TagIndex = dataGridView1.Rows[dataGridView1.SelectedRows[0].Index].Tag;
                 await mySQLQerty.SureDataServised(_connectionManager.GetConnection(), TagIndex);
+                UpdateRecord();
             }
             catch
             {
@@ -79,10 +69,29 @@ namespace WindowsFormsApp4
 
         private async void Veterinar_Load(object sender, EventArgs e)
         {
-            await _connectionManager.ConnectionOpen();
-            await mySQLQerty.GetDiagnosisName(_connectionManager.GetConnection());
-            await _connectionManager.ConnectionClose();
             cmbBox_Table.SelectedIndex = 1;
+        }
+
+        private void ExitsMain_Click(object sender, EventArgs e)
+        {
+            Atorisation a = new Atorisation();
+            a.Show();
+            this.Hide();
+        }
+        private async void UpdateRecord()
+        {
+            switch (cmbBox_Table.SelectedIndex)
+            {
+                case 0:
+                    await mySQLQerty.ShowDataGrid_Visists(_connectionManager.GetConnection(), dataGridView1);
+                    break;
+                case 1:
+                    await mySQLQerty.ShowDataGrisView_AllVisits(_connectionManager.GetConnection(), dataGridView1);
+                    break;
+                case 2:
+                    await mySQLQerty.ShowDataGrisView_TypeService(_connectionManager.GetConnection(), dataGridView1);
+                    break;
+            }
         }
     }
 }

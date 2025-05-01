@@ -31,6 +31,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.cmbBox_Diagnosis = new System.Windows.Forms.ComboBox();
             this.btn_AddDiagnosis = new System.Windows.Forms.Button();
+            this.btnBack = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -38,6 +39,9 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(13, 13);
             this.dataGridView1.Name = "dataGridView1";
@@ -47,6 +51,7 @@
             // 
             // cmbBox_Diagnosis
             // 
+            this.cmbBox_Diagnosis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbBox_Diagnosis.FormattingEnabled = true;
             this.cmbBox_Diagnosis.Location = new System.Drawing.Point(13, 445);
             this.cmbBox_Diagnosis.Name = "cmbBox_Diagnosis";
@@ -56,7 +61,8 @@
             // 
             // btn_AddDiagnosis
             // 
-            this.btn_AddDiagnosis.Location = new System.Drawing.Point(659, 453);
+            this.btn_AddDiagnosis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_AddDiagnosis.Location = new System.Drawing.Point(140, 443);
             this.btn_AddDiagnosis.Name = "btn_AddDiagnosis";
             this.btn_AddDiagnosis.Size = new System.Drawing.Size(129, 23);
             this.btn_AddDiagnosis.TabIndex = 2;
@@ -64,11 +70,24 @@
             this.btn_AddDiagnosis.UseVisualStyleBackColor = true;
             this.btn_AddDiagnosis.Click += new System.EventHandler(this.AddDiagnosis_Click);
             // 
+            // btnBack
+            // 
+            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBack.Location = new System.Drawing.Point(707, 445);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(81, 23);
+            this.btnBack.TabIndex = 3;
+            this.btnBack.Text = "Назад";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.Back_Click);
+            // 
             // DiagnosisPet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(800, 488);
+            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btn_AddDiagnosis);
             this.Controls.Add(this.cmbBox_Diagnosis);
             this.Controls.Add(this.dataGridView1);
@@ -85,5 +104,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ComboBox cmbBox_Diagnosis;
         private System.Windows.Forms.Button btn_AddDiagnosis;
+        private System.Windows.Forms.Button btnBack;
     }
 }

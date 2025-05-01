@@ -17,19 +17,33 @@ namespace WindowsFormsApp4
         private DatabaseConnectionManager _connectionManager = new DatabaseConnectionManager();
         private MySQLQerty mySQLQerty = new MySQLQerty();
         private bool isAdd;
-        public AddSQLOwnerAndPets()
+        int Sex;
+        public AddSQLOwnerAndPets(bool add)
         {
             InitializeComponent();
-            isAdd = IDataSave.isAdd;
+            isAdd = add;
 
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            await _connectionManager.ConnectionOpen();
+            if (rdBtnSexM.Checked == true)
+            {
+                Sex = 1;
+            }
+            else if (rdBtnSexF.Checked == true)
+            {
+                Sex = 0;
+            }
+            else 
+            {
+                MessageBox.Show("Ошибка", "Ошибка. Выберите пол", MessageBoxButtons.OK);
+                return;
+            }
+                await _connectionManager.ConnectionOpen();
             if(isAdd)
             {
-                if(txtFirstName.Text != "" || txtSecondName.Text != "" || txtAddres.Text != "" || txtPetName.Text != "" || txtPetName.Text != "" || txtSpecial.Text != "" || txtBreed.Text != "")
+                if(txtFirstName.Text != "" || txtSecondName.Text != "" || txtAddres.Text != "" || txtPetName.Text != "" || txtPetName.Text != "" || cmbBox_Species.Text != "" || txtBreed.Text != "")
                 {
                     IDataSave.OwnerPets OP = new IDataSave.OwnerPets()
                     {
@@ -38,23 +52,24 @@ namespace WindowsFormsApp4
                         middleName = txtMiddleNAme.Text,
                         numberPhone = txtNumberTel.Text,
                         email = txtEmail.Text,
-                        //city = txtCity.Text,
+                        city = cmbBox_City.Text,
                         address = txtAddres.Text,
                     };
                     IDataSave.Pets p = new IDataSave.Pets
                     {
                         petName = txtPetName.Text,
-                        species = txtSpecial.Text,
+                        species = cmbBox_Species.Text,
                         breed = txtBreed.Text,
                         color = txtColar.Text,
-                        //sex = txtSex.Text,
+                        sex = Sex,
                         mark = txtMark.Text
                     };
-                    await mySQLQerty.AddDateOwnerPets(_connectionManager.GetConnection(), p, OP);
+                    await mySQLQerty.AddDate_OwnerPets(_connectionManager.GetConnection(), p, OP);
                 }
                 else
                 {
                     MessageBox.Show("Ошибка", "Ошибка. Ввеидте везде значение", MessageBoxButtons.OK);
+                    return;
                 }
             }
             else if (!isAdd)
@@ -75,17 +90,29 @@ namespace WindowsFormsApp4
                 txtMiddleNAme.Text = OP.middleName;
                 txtNumberTel.Text = OP.numberPhone;
                 txtEmail.Text = OP.email;
-                //txtCity.Text = OP.city;
+                cmbBox_City.Text = OP.city;
                 txtAddres.Text = OP.address;
                 IDataSave.Pets P = await mySQLQerty.GetStructureTablePets(_connectionManager.GetConnection());
                 txtPetName.Text = P.petName;
-                txtSpecial.Text = P.species;
+                cmbBox_Species.Text = P.species;
                 txtBreed.Text = P.breed;
                 txtColar.Text = P.color;
-                //txtSex.Text = P.sex;
+                P.sex = Sex;
                 txtMark.Text = P.mark;
                 await _connectionManager.ConnectionClose();
+                if (Sex == 0)
+                {
+                    rdBtnSexF.Checked = true;
+                    rdBtnSexM.Checked = false;
+                }
+                else if (Sex == 1)
+                {
+                    rdBtnSexM.Checked = true;
+                    rdBtnSexF.Checked = false;
+                }
             }
+            cmbBox_City.Items.AddRange(IDataSave.NameСity);
+            cmbBox_Species.Items.AddRange(IDataSave.NameSpecies);
         }
     }
 }

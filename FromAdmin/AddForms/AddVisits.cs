@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp4
+namespace WindowsFormsApp4.FromAdmin.AddForms
 {
-    public partial class Employees : Form
+    public partial class AddVisits : Form
     {
-        public Employees()
+        public AddVisits()
         {
             InitializeComponent();
         }
