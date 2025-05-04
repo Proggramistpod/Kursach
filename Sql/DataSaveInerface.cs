@@ -9,6 +9,7 @@ namespace WindowsFormsApp4
 {
     internal class IDataSave
     {
+        public static int idPets, IdOwner;
         public static object idEmployees { get; set; }
         public static int LevelAccess { get; set; }
         public static int idStr { get; set; }
@@ -16,6 +17,8 @@ namespace WindowsFormsApp4
         public static string[] NameDiagnosis { get; set; }
         public static string[] NameСity { get; set; }
         public static string[] NameSpecies { get; set; }
+        public static string[] NameJobTitle { get; set; }
+        public static string[] NameService { get; set; }
         public struct OwnerPets
         {
             public string firstName;
@@ -43,6 +46,8 @@ namespace WindowsFormsApp4
             public string JobTitle;
             public string NumberPhone;
             public string Email;
+            public string City;
+            public string Address;
             public string SeriesPassport;
             public string NumberPassport;
             public string PassportIssued;
@@ -50,13 +55,15 @@ namespace WindowsFormsApp4
             public string UnitCodePassport;
             public string Login;
             public string Password;
-            public int LevelAccess;
             public string WordAccess; 
         }
         public struct Visits
         {
             public int Pets;
             public int Employees;
+            public DateTime Date;
+            public DateTime Time;
+            public string Serviced;
         }
     }
 }

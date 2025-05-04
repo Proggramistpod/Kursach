@@ -1,10 +1,12 @@
 ﻿using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +18,7 @@ namespace WindowsFormsApp4
     internal class MySQLQerty
     {
         GenerlyInterface GenerlyInterface = new GenerlyInterface();
-        public async Task GetListName(MySqlConnection mySqlConnection) 
+        public async Task GetListName(MySqlConnection mySqlConnection)
         {
             string qwerty = "SELECT NameDiagnosis FROM Diagnosis";
             using (MySqlCommand mySqlCommand = new MySqlCommand(qwerty, mySqlConnection))
@@ -24,9 +26,13 @@ namespace WindowsFormsApp4
                 string sqlQueryDiagnosis = "SELECT NameDiagnosis FROM Diagnosis";
                 string sqlQeryCity = "SELECT NameCity from city;";
                 string sqlQerySpecies = "SELECT NameSpecies from species;";
+                string sqlQeuryJobTitle = "SELECT JobTitle from jobtitle";
+                string sqlQeuryService = "SELECT Service from service";
                 IDataSave.NameDiagnosis = await GenerlyInterface.ArrayFromDB(sqlQueryDiagnosis, "NameDiagnosis", mySqlConnection);
                 IDataSave.NameSpecies = await GenerlyInterface.ArrayFromDB(sqlQerySpecies, "NameSpecies", mySqlConnection);
                 IDataSave.NameСity = await GenerlyInterface.ArrayFromDB(sqlQeryCity, "NameCity", mySqlConnection);
+                IDataSave.NameJobTitle = await GenerlyInterface.ArrayFromDB(sqlQeuryJobTitle, "JobTitle", mySqlConnection);
+                IDataSave.NameService = await GenerlyInterface.ArrayFromDB(sqlQeuryService, "Service", mySqlConnection);
             }
         }
 
@@ -60,12 +66,15 @@ namespace WindowsFormsApp4
         public async Task<int> get_EmployyesAccess(MySqlConnection mySqlConnection) //Получения уровня досутпа
         {
 
-            string qwerty = "Select Level_Access FROM employees WHERE Id_Employees = @idEmployees";
+            string qwerty = @"SELECT jt.LvLaccess
+                            FROM employees AS e
+                            JOIN jobtitle AS jt ON e.IdJobTitle = jt.IdJobTitle
+                            WHERE e.Id_Employees = @EmployeeId;";
             using (MySqlCommand mysqlc = new MySqlCommand(qwerty, mySqlConnection))
             {
                 try
                 {
-                    mysqlc.Parameters.AddWithValue("@idEmployees", IDataSave.idEmployees);
+                    mysqlc.Parameters.AddWithValue("@EmployeeId", IDataSave.idEmployees);
                     object result = await mysqlc.ExecuteScalarAsync();
                     if (result != null && result != DBNull.Value)
                     {
@@ -108,54 +117,7 @@ namespace WindowsFormsApp4
                 return -1;
             }
         }
-        public async Task ShowDataGrid_Visists(MySqlConnection mySqlConnection, DataGridView dataGridView) //Показывает визиты у опредленного врача
-        {
-            string query = @"
-                SELECT 
-                v.Id_Visits AS 'Идентификатор визита', 
-                p.Name_Pets AS 'Имя животного', 
-                p.Breed AS 'Порода животного', 
-                s.NameSpecies AS 'Вид животного', 
-                v.Data_Visits AS 'Дата визита', 
-                v.Time_Visits AS 'Время визита', 
-                ser.Service AS 'Тип услуги',
-                v.Serviced AS 'Оказано'
-                FROM visits AS v 
-                JOIN pets AS p ON v.Id_Pet = p.Id_pets 
-                JOIN species AS s ON p.Species_Id = s.IdAnimal 
-                JOIN service AS ser ON v.Id_Service = ser.Id_Service 
-                WHERE v.Id_Doctor = @employeeId;";
 
-            using (MySqlCommand mySqlCommand = new MySqlCommand(query, mySqlConnection))
-            {
-                try
-                {
-                    mySqlCommand.Parameters.Add("@employeeId", MySqlDbType.Int32).Value = IDataSave.idEmployees;
-                    using (MySqlDataAdapter myDataAdapter = new MySqlDataAdapter(mySqlCommand))
-                    {
-                        myDataAdapter.SelectCommand = mySqlCommand;
-                        myDataAdapter.SelectCommand.Connection = mySqlConnection;
-                        DataTable DT = new DataTable();
-                        await myDataAdapter.FillAsync(DT);
-                        dataGridView.DataSource = DT;
-                        for(int i = 0; i < DT.Rows.Count; i++)
-                        {
-                            dataGridView.Rows[i].Tag = DT.Rows[i]["Идентификатор визита"];
-                        }
-                        dataGridView.Columns.Remove("Идентификатор визита");
-                        foreach (DataGridViewColumn column in dataGridView.Columns)
-                        {
-                            column.DefaultCellStyle.NullValue = "-";
-                        }
-                    }
-                }
-                catch (MySqlException e)
-                {
-                    MessageBox.Show($"Не предвиденная ошибка. {e}");
-                }
-            }
-
-        }
         public async Task ShowDataGrisView_TypeService(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
             string query = "SELECT Service AS 'Услуга', Price AS 'Цена', Description AS 'Описание' FROM service";
@@ -206,13 +168,13 @@ namespace WindowsFormsApp4
                         myDataAdapter.SelectCommand = mySqlCommand;
                         myDataAdapter.SelectCommand.Connection = mySqlConnection;
                         DataTable DT = new DataTable();
-                        await myDataAdapter.FillAsync(DT); 
+                        await myDataAdapter.FillAsync(DT);
                         dataGridView.DataSource = DT;
 
                         // Сохраняем ID в Tag строки
                         for (int i = 0; i < DT.Rows.Count; i++)
                         {
-                            object idValue = DT.Rows[i]["Id_Visits"]; 
+                            object idValue = DT.Rows[i]["Id_Visits"];
 
                             if (idValue != DBNull.Value)
                             {
@@ -220,10 +182,10 @@ namespace WindowsFormsApp4
                             }
                             else
                             {
-                                dataGridView.Rows[i].Tag = null; 
+                                dataGridView.Rows[i].Tag = null;
                             }
                         }
-                        if (dataGridView.Columns.Contains("Id_Visits")) 
+                        if (dataGridView.Columns.Contains("Id_Visits"))
                         {
                             dataGridView.Columns["Id_Visits"].Visible = false;
                         }
@@ -259,112 +221,8 @@ namespace WindowsFormsApp4
                 MessageBox.Show($"Не предвиденная ошибка. {e}");
             }
         }
-        public async void ShowDataGrid_DiagnosisPet(MySqlConnection mySqlConnection, object Id, DataGridView dataGridView)
-        {
-            try
-            {
-
-                string query = @"
-                    SELECT
-                        d.NameDiagnosis AS 'Диганоз',
-                        d.Description AS 'Описание',
-                        dp.DateGetDiagnosis AS 'Дата выдачи'
-                    FROM
-                        DiagnosisPets dp
-                    JOIN
-                        Diagnosis d ON dp.IdDiagnosis = d.IdDiagnosis
-                    JOIN
-                        visits v ON dp.IdPets = v.Id_Pet 
-                    WHERE
-                        v.Id_Visits = @VisitID;";
-
-                using (MySqlCommand command = new MySqlCommand(query, mySqlConnection))
-                {
-                    command.Parameters.AddWithValue("@VisitID", Id);
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        DataTable dt = new DataTable();
-                        dt.Load(reader);
-                        dataGridView.DataSource = dt;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка: " + ex.Message);
-            }
-        }
-        public async Task ShowDataGrisView_OwnerPets(MySqlConnection mySqlConnection, DataGridView dataGridView)
-        {
-            string query = @"
-                   SELECT
-                       owner_pets.Id_Owner,
-                       CONCAT_WS(' ', owner_pets.First_Name, owner_pets.Second_Name, owner_pets.Middle_Name) AS 'Полное имя',
-                       CONCAT_WS(' ', (SELECT NameCity FROM city where owner_pets.IdCity = city.idCity), owner_pets.Street) AS 'Адрес',
-                       owner_pets.Number_Phone AS 'Номер телефона',
-                       pets.Name_Pets AS 'Питомца',
-                       (select NameSpecies from species where pets.Species_Id = species.IdAnimal) AS 'Вид',
-                       pets.Breed AS 'Порода',
-                       pets.Color AS 'Цвет'
-                     FROM
-                         owner_pets 
-                     JOIN
-                         pets  ON owner_pets.Id_pets = pets.Id_Pets
-                     JOIN
-                         species  ON pets.Species_Id = species.IdAnimal;";
-            try
-            {
-                using (MySqlCommand mySqlCommand = new MySqlCommand(query, mySqlConnection))
-                {
-                    try
-                    {
-                        using (MySqlDataAdapter myDataAdapter = new MySqlDataAdapter(mySqlCommand))
-                        {
-                            myDataAdapter.SelectCommand = mySqlCommand;
-                            myDataAdapter.SelectCommand.Connection = mySqlConnection;
-                            DataTable DT = new DataTable();
-                            await myDataAdapter.FillAsync(DT);
-                            dataGridView.DataSource = DT;
-
-                            for (int i = 0; i < DT.Rows.Count; i++)
-                            {
-                                object idValue = DT.Rows[i]["Id_Owner"];
-
-                                if (idValue != DBNull.Value)
-                                {
-                                    dataGridView.Rows[i].Tag = Convert.ToInt32(idValue);
-                                }
-                                else
-                                {
-                                    dataGridView.Rows[i].Tag = null;
-                                }
-                            }
-
-                            // Скрываем столбец с ID
-                            if (dataGridView.Columns.Contains("Id_Owner")) // Проверяем, существует ли столбец
-                            {
-                                dataGridView.Columns["Id_Owner"].Visible = false;
-                            }
 
 
-                            foreach (DataGridViewColumn column in dataGridView.Columns)
-                            {
-                                column.DefaultCellStyle.NullValue = "-";
-                            }
-                        }
-                    }
-                    catch (MySqlException e)
-                    {
-                        MessageBox.Show($"Непредвиденная ошибка. {e}");
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                MessageBox.Show($"Не предвиденная ошибка. {e}");
-            }
-        }
         public async Task AddDate_OwnerPets(MySqlConnection mySqlConnection, IDataSave.Pets pets, IDataSave.OwnerPets OwnerPets) //ПЕРЕПИШИ
         {
             MySqlTransaction mst = null;
@@ -419,8 +277,8 @@ namespace WindowsFormsApp4
             {
                 mst.Dispose();
             }
-            
-            
+
+
         }
         public async Task<IDataSave.OwnerPets> GetStructureTableOwnerPets(MySqlConnection mySqlConnection)
         {
@@ -473,16 +331,16 @@ namespace WindowsFormsApp4
         public async Task<IDataSave.Pets> GetStructureTablePets(MySqlConnection mySqlConnection)
         {
             Nullable<Pets> pets = null;
-            string qwerty = @"SELECT pets.Name_Pets, species.NameSpecies, pets.Breed, pets.Sex, pets.Color, pets.Mark_Animal 
+            string query = @"SELECT pets.Name_Pets, species.NameSpecies, pets.Breed, pets.Sex, pets.Color, pets.Mark_Animal 
                 FROM pets JOIN owner_pets ON pets.Id_Pets = owner_pets.id_Pets JOIN species ON species.IdAnimal = pets.Species_Id  WHERE owner_pets.id_Pets = @idOwner";
             try
             {
-                using(MySqlCommand mySQLCommand = new MySqlCommand(qwerty, mySqlConnection))
+                using (MySqlCommand mySQLCommand = new MySqlCommand(query, mySqlConnection))
                 {
-                    if(!string.IsNullOrEmpty(IDataSave.idStr.ToString()) && int.TryParse(IDataSave.idStr.ToString(), out int idOwnerPets))
+                    if (!string.IsNullOrEmpty(IDataSave.idStr.ToString()) && int.TryParse(IDataSave.idStr.ToString(), out int idOwnerPets))
                     {
                         mySQLCommand.Parameters.Add("@idOwner", MySqlDbType.Int32).Value = idOwnerPets;
-                        using(var mySQLDataReader = await mySQLCommand.ExecuteReaderAsync())
+                        using (var mySQLDataReader = await mySQLCommand.ExecuteReaderAsync())
                         {
                             if (await mySQLDataReader.ReadAsync())
                             {
@@ -494,7 +352,7 @@ namespace WindowsFormsApp4
                                 tempPets.sex = Convert.ToInt32(mySQLDataReader["Sex"] != DBNull.Value ? mySQLDataReader["Sex"] : null);
                                 tempPets.mark = mySQLDataReader["Mark_Animal"] != DBNull.Value ? mySQLDataReader["Mark_Animal"].ToString() : null;
                                 pets = tempPets;
-                            }    
+                            }
                         }
                     }
                     else
@@ -514,13 +372,13 @@ namespace WindowsFormsApp4
         {
             try
             {
-                string qwerty = @"INSERT INTO diagnosispets (IdPets, IdDiagnosis, DateGetDiagnosis)
+                string query = @"INSERT INTO diagnosispets (IdPets, IdDiagnosis, DateGetDiagnosis)
                                 VALUE (
                                     (SELECT v.Id_Pet FROM visits v WHERE v.Id_Visits = @IdVisits),
                                     (SELECT idDiagnosis FROM diagnosis WHERE NameDiagnosis = @diagnosisName),
                                     CURRENT_DATE()
                                 );";
-                using (MySqlCommand mysqlcommand = new MySqlCommand(qwerty, mySqlConnection))
+                using (MySqlCommand mysqlcommand = new MySqlCommand(query, mySqlConnection))
                 {
                     mysqlcommand.Parameters.Add("@IdVisits", MySqlDbType.Int32).Value = IdVisits;
                     mysqlcommand.Parameters.Add("@diagnosisName", MySqlDbType.String).Value = diagnosisName;
@@ -532,56 +390,59 @@ namespace WindowsFormsApp4
                 MessageBox.Show($"Не предвиденная ошибка. {ex}");
             }
         }
+        public async Task AddEmployes(IDataSave.Employees employees, MySqlConnection conn)
+        {
+            string query = @"
+                INSERT INTO Employees (
+                    First_Name, Second_Name, Middle_Name, IdJobTitle,
+                    Number_Phone, Email, Serias_Passport, Number_Passport,
+                    Passport_Issued, Date_Pasport_Issued, Unit_Code_Passport,
+                    Login, Password, Word_Access, IdCity, Address
+                )
+                VALUES (
+                    @FirstName, @SecondName, @MiddleName,
+                    (SELECT IdJobTitle FROM jobtitle WHERE JobTitle = @JobTitle),
+                    @NumberPhone, @Email, @SeriesPassport, @NumberPassport,
+                    @PassportIssued, @DataPassportIssued, @UnicodePassport,
+                    @Login, @Password, @WordAccess,
+                    (SELECT idCity FROM city WHERE NameCity = @City), @Address
+                );
+";
+
+            using (MySqlCommand command = new MySqlCommand(query, conn))
+            {
+                command.Parameters.AddWithValue("@FirstName", employees.FirstName);
+                command.Parameters.AddWithValue("@SecondName", employees.SecondName);
+                command.Parameters.AddWithValue("@MiddleName", employees.MiddleName);
+                command.Parameters.AddWithValue("@JobTitle", employees.JobTitle);
+                command.Parameters.AddWithValue("@NumberPhone", employees.NumberPhone);
+                command.Parameters.AddWithValue("@Email", employees.Email);
+                command.Parameters.AddWithValue("@SeriesPassport", employees.SeriesPassport);
+                command.Parameters.AddWithValue("@NumberPassport", employees.NumberPassport);
+                command.Parameters.AddWithValue("@PassportIssued", employees.PassportIssued);
+                command.Parameters.Add("@DataPassportIssued", MySqlDbType.Date).Value = employees.DatePassportIssued.Date;
+                command.Parameters.AddWithValue("@UnicodePassport", employees.UnitCodePassport);
+                command.Parameters.AddWithValue("@Login", employees.Login);
+                command.Parameters.AddWithValue("@Password", employees.Password);
+                command.Parameters.AddWithValue("@WordAccess", employees.WordAccess);
+                command.Parameters.AddWithValue("@City", employees.City);
+                command.Parameters.AddWithValue("@Address", employees.Address);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
         public async Task ShowDataGridView_Employees(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
             string query = @"SELECT
-                                Id_Employees,
-                                CONCAT_WS(' ', First_Name, Second_Name, Middle_Name) AS 'ФИО',
-                                Job_title AS 'Должность',
-                                Number_Phone AS 'Номер телефона',
-                                Email AS 'Электронная почта'
+                                e.Id_Employees,
+                                CONCAT_WS(' ', e.First_Name, e.Second_Name, e.Middle_Name) AS 'ФИО',
+                                j.JobTitle AS 'Должность',
+                                e.Number_Phone AS 'Номер телефона',
+                                e.Email AS 'Электронная почта'
                             FROM
-                                employees;";
-            using (MySqlCommand mySqlCommand = new MySqlCommand(query, mySqlConnection))
-            {
-                try
-                {
-                    using (MySqlDataAdapter myDataAdapter = new MySqlDataAdapter(mySqlCommand))
-                    {
-                        myDataAdapter.SelectCommand = mySqlCommand;
-                        myDataAdapter.SelectCommand.Connection = mySqlConnection;
-                        DataTable DT = new DataTable();
-                        await myDataAdapter.FillAsync(DT);
-                        dataGridView.DataSource = DT;
-
-                        for (int i = 0; i < DT.Rows.Count; i++)
-                        {
-                            object idValue = DT.Rows[i]["Id_Employees"];
-
-                            if (idValue != DBNull.Value)
-                            {
-                                dataGridView.Rows[i].Tag = Convert.ToInt32(idValue);
-                            }
-                        }
-
-                        // Скрываем столбец с ID
-                        if (dataGridView.Columns.Contains("Id_Employees"))
-                        {
-                            dataGridView.Columns["Id_Employees"].Visible = false;
-                        }
-
-
-                        foreach (DataGridViewColumn column in dataGridView.Columns)
-                        {
-                            column.DefaultCellStyle.NullValue = "-";
-                        }
-                    }
-                }
-                catch (MySqlException e)
-                {
-                    MessageBox.Show($"Непредвиденная ошибка. {e}");
-                }
-            }
+                                employees e
+                            JOIN
+                                jobtitle j ON j.IdJobTitle = e.IdJobTitle";
+            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Employees");
         }
         public async Task ShowDataGridView_AllDiagnosis(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
@@ -591,44 +452,7 @@ namespace WindowsFormsApp4
                                 Description AS 'Описание'
                             FROM
                                 diagnosis;";
-            using (MySqlCommand mySqlCommand = new MySqlCommand(query, mySqlConnection))
-            {
-                try
-                {
-                    using (MySqlDataAdapter myDataAdapter = new MySqlDataAdapter(mySqlCommand))
-                    {
-                        myDataAdapter.SelectCommand = mySqlCommand;
-                        myDataAdapter.SelectCommand.Connection = mySqlConnection;
-                        DataTable DT = new DataTable();
-                        await myDataAdapter.FillAsync(DT);
-                        dataGridView.DataSource = DT;
-
-                        for (int i = 0; i < DT.Rows.Count; i++)
-                        {
-                            object idValue = DT.Rows[i]["IdDiagnosis"];
-
-                            if (idValue != DBNull.Value)
-                            {
-                                dataGridView.Rows[i].Tag = Convert.ToInt32(idValue);
-                            }
-                        }
-                        if (dataGridView.Columns.Contains("IdDiagnosis"))
-                        {
-                            dataGridView.Columns["IdDiagnosis"].Visible = false;
-                        }
-
-
-                        foreach (DataGridViewColumn column in dataGridView.Columns)
-                        {
-                            column.DefaultCellStyle.NullValue = "-";
-                        }
-                    }
-                }
-                catch (MySqlException e)
-                {
-                    MessageBox.Show($"Непредвиденная ошибка. {e}");
-                }
-            }
+            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "IdDiagnosis");
         }
         public async Task ShowDataGridView_City(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
@@ -637,44 +461,7 @@ namespace WindowsFormsApp4
                                 NameCity AS 'Название города'
                             FROM
                                 city;";
-            using (MySqlCommand mySqlCommand = new MySqlCommand(query, mySqlConnection))
-            {
-                try
-                {
-                    using (MySqlDataAdapter myDataAdapter = new MySqlDataAdapter(mySqlCommand))
-                    {
-                        myDataAdapter.SelectCommand = mySqlCommand;
-                        myDataAdapter.SelectCommand.Connection = mySqlConnection;
-                        DataTable DT = new DataTable();
-                        await myDataAdapter.FillAsync(DT);
-                        dataGridView.DataSource = DT;
-
-                        for (int i = 0; i < DT.Rows.Count; i++)
-                        {
-                            object idValue = DT.Rows[i]["idCity"];
-
-                            if (idValue != DBNull.Value)
-                            {
-                                dataGridView.Rows[i].Tag = Convert.ToInt32(idValue);
-                            }
-                        }
-                        if (dataGridView.Columns.Contains("idCity"))
-                        {
-                            dataGridView.Columns["idCity"].Visible = false;
-                        }
-
-
-                        foreach (DataGridViewColumn column in dataGridView.Columns)
-                        {
-                            column.DefaultCellStyle.NullValue = "-";
-                        }
-                    }
-                }
-                catch (MySqlException e)
-                {
-                    MessageBox.Show($"Непредвиденная ошибка. {e}");
-                }
-            }
+            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "idCity");
         }
         public async Task ShowDataGridView_Species(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
@@ -683,44 +470,341 @@ namespace WindowsFormsApp4
                                 NameSpecies AS 'Название вида'
                             FROM
                                 species;";
-            using (MySqlCommand mySqlCommand = new MySqlCommand(query, mySqlConnection))
+            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "IdAnimal");
+        }
+        public async Task ShowDataGrisView_OwnerPets(MySqlConnection mySqlConnection, DataGridView dataGridView)
+        {
+            string query = @"
+                   SELECT
+                       owner_pets.Id_Owner,
+                       CONCAT_WS(' ', owner_pets.First_Name, owner_pets.Second_Name, owner_pets.Middle_Name) AS 'Полное имя',
+                       CONCAT_WS(' ', (SELECT NameCity FROM city where owner_pets.IdCity = city.idCity), owner_pets.Street) AS 'Адрес',
+                       owner_pets.Number_Phone AS 'Номер телефона',
+                       pets.Name_Pets AS 'Питомца',
+                       (select NameSpecies from species where pets.Species_Id = species.IdAnimal) AS 'Вид',
+                       pets.Breed AS 'Порода',
+                       pets.Color AS 'Цвет'
+                     FROM
+                         owner_pets 
+                     JOIN
+                         pets  ON owner_pets.Id_pets = pets.Id_Pets
+                     JOIN
+                         species  ON pets.Species_Id = species.IdAnimal;";
+            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Owner");
+        }
+        public async Task ShowDataGrid_Visists(MySqlConnection mySqlConnection, DataGridView dataGridView) //Показывает визиты у опредленного врача
+        {
+            string query = @"
+                SELECT 
+                v.Id_Visits AS 'Идентификатор визита', 
+                p.Name_Pets AS 'Имя животного', 
+                p.Breed AS 'Порода животного', 
+                s.NameSpecies AS 'Вид животного', 
+                v.Data_Visits AS 'Дата визита', 
+                v.Time_Visits AS 'Время визита', 
+                ser.Service AS 'Тип услуги',
+                v.Serviced AS 'Оказано'
+                FROM visits AS v 
+                JOIN pets AS p ON v.Id_Pet = p.Id_pets 
+                JOIN species AS s ON p.Species_Id = s.IdAnimal 
+                JOIN service AS ser ON v.Id_Service = ser.Id_Service 
+                WHERE v.Id_Doctor = @employeeId;";
+            await GenerlyInterface.ShowDataGridView_WHEN(mySqlConnection, dataGridView, query, "Идентификатор визита", "@employeeId", Convert.ToInt32(IDataSave.idEmployees));
+        }
+        public async void ShowDataGrid_DiagnosisPet(MySqlConnection mySqlConnection, object Id, DataGridView dataGridView)
+        {
+            try
+            {
+
+                string query = @"
+                    SELECT
+                        dp.IdDiagnosis
+                        d.NameDiagnosis AS 'Диагноз',
+                        d.Description AS 'Описание',
+                        dp.DateGetDiagnosis AS 'Дата выдачи'
+                    FROM
+                        DiagnosisPets dp
+                    JOIN
+                        Diagnosis d ON dp.IdDiagnosis = d.IdDiagnosis
+                    JOIN
+                        visits v ON dp.IdPets = v.Id_Pet 
+                    WHERE
+                        v.Id_Visits = @VisitID;";
+                await GenerlyInterface.ShowDataGridView_WHEN(mySqlConnection, dataGridView, query, "IdDiagnosis", "@VisitID", Convert.ToInt32(Id));
+            }
+            catch
+            {
+
+            }
+        }
+        public async Task ChangeData_OwnerPets(MySqlConnection conn, IDataSave.OwnerPets owner, IDataSave.Pets pet)
+        {
+            using (MySqlTransaction transaction = await conn.BeginTransactionAsync())
             {
                 try
                 {
-                    using (MySqlDataAdapter myDataAdapter = new MySqlDataAdapter(mySqlCommand))
+                    // 1. Обновляем владельца (owner_pets)
+                    string updateOwnerQuery = @"
+                    UPDATE owner_pets 
+                    SET 
+                        First_Name = @firstName,
+                        Second_Name = @secondName,
+                        Middle_Name = @middleName,
+                        Number_Phone = @phone,
+                        Email = @email,
+                        IdCity = (SELECT IdCity FROM city WHERE NameCity = @city),
+                        Street = @address
+                    WHERE id_Owner = @ownerId";
+
+                    using (MySqlCommand cmdOwner = new MySqlCommand(updateOwnerQuery, conn, transaction))
                     {
-                        myDataAdapter.SelectCommand = mySqlCommand;
-                        myDataAdapter.SelectCommand.Connection = mySqlConnection;
-                        DataTable DT = new DataTable();
-                        await myDataAdapter.FillAsync(DT);
-                        dataGridView.DataSource = DT;
+                        cmdOwner.Parameters.AddWithValue("@ownerId", idStr);
+                        cmdOwner.Parameters.AddWithValue("@firstName", owner.firstName);
+                        cmdOwner.Parameters.AddWithValue("@secondName", owner.secondName);
+                        cmdOwner.Parameters.AddWithValue("@middleName", owner.middleName);
+                        cmdOwner.Parameters.AddWithValue("@phone", owner.numberPhone);
+                        cmdOwner.Parameters.AddWithValue("@email", owner.email);
+                        cmdOwner.Parameters.AddWithValue("@city", owner.city);
+                        cmdOwner.Parameters.AddWithValue("@address", owner.address);
 
-                        for (int i = 0; i < DT.Rows.Count; i++)
-                        {
-                            object idValue = DT.Rows[i]["IdAnimal"];
-
-                            if (idValue != DBNull.Value)
-                            {
-                                dataGridView.Rows[i].Tag = Convert.ToInt32(idValue);
-                            }
-                        }
-                        if (dataGridView.Columns.Contains("IdAnimal"))
-                        {
-                            dataGridView.Columns["IdAnimal"].Visible = false;
-                        }
-
-
-                        foreach (DataGridViewColumn column in dataGridView.Columns)
-                        {
-                            column.DefaultCellStyle.NullValue = "-";
-                        }
+                        int ownerRows = await cmdOwner.ExecuteNonQueryAsync();
+                        if (ownerRows == 0) throw new Exception("Владелец не найден");
                     }
+
+                    // 2. Обновляем животное (pets)
+                    string updatePetQuery = @"
+                    UPDATE pets 
+                    SET 
+                        Name_Pets = @petName,
+                        Species_id = (SELECT IdAnimal FROM species WHERE NameSpecies = @species),
+                        Breed = @breed,
+                        Color = @color,
+                        Sex = @sex,
+                        Mark_Animal = @mark
+                    WHERE Id_pets = (select id_pets from owner_pets where id_Owner = @petId)";
+
+                    using (MySqlCommand cmdPet = new MySqlCommand(updatePetQuery, conn, transaction))
+                    {
+                        cmdPet.Parameters.AddWithValue("@petId", idStr);
+                        cmdPet.Parameters.AddWithValue("@petName", pet.petName);
+                        cmdPet.Parameters.AddWithValue("@species", pet.species);
+                        cmdPet.Parameters.AddWithValue("@breed", pet.breed);
+                        cmdPet.Parameters.AddWithValue("@color", pet.color);
+                        cmdPet.Parameters.AddWithValue("@sex", pet.sex);
+                        cmdPet.Parameters.AddWithValue("@mark", pet.mark);
+
+                        int petRows = await cmdPet.ExecuteNonQueryAsync();
+                        if (petRows == 0) throw new Exception("Животное не найдено");
+                    }
+                    await transaction.CommitAsync();
                 }
-                catch (MySqlException e)
+                catch (Exception ex)
                 {
-                    MessageBox.Show($"Непредвиденная ошибка. {e}");
+                    await transaction.RollbackAsync();
+                    MessageBox.Show($"Ошибка: {ex.Message}");
                 }
             }
+        }
+        public async Task ChangeData_Employees(MySqlConnection mysqlconn, IDataSave.Employees employees)
+        {
+
+            string qury = @"UPDATE 
+                                employees
+                            SET
+                                First_Name = @FirstName,
+                                Second_Name = @SecondName,
+                                Middle_Name = @MiddleName,
+                                Number_Phone = @NumberPhone,
+                                IdJobTitle =  (SELECT IdJobTitle FROM jobtitle WHERE JobTitle = @JobTitle),
+                                Email = @Email,
+                                Serias_Passport = @SeriesPassport,
+                                Number_Passport = @NumberPassport,
+                                Passport_Issued = @PassportIssued,
+                                Date_Pasport_Issued = @DataPassportIssued,
+                                Unit_Code_Passport = @UnicodePassport,
+                                Login = @Login,
+                                Password = @Password,
+                                Word_Access = @WordAccess,
+                                IdCity = (SELECT idCity FROM city WHERE NameCity = @City),
+                                Address = @Address
+                            WHERE
+                                Id_Employees = @Id_Employees;"
+            ;
+            using (MySqlCommand command = new MySqlCommand(qury, mysqlconn))
+            {
+                command.Parameters.AddWithValue("@FirstName", employees.FirstName);
+                command.Parameters.AddWithValue("@SecondName", employees.SecondName);
+                command.Parameters.AddWithValue("@MiddleName", employees.MiddleName);
+                command.Parameters.AddWithValue("@JobTitle", employees.JobTitle);
+                command.Parameters.AddWithValue("@NumberPhone", employees.NumberPhone);
+                command.Parameters.AddWithValue("@Email", employees.Email);
+                command.Parameters.AddWithValue("@SeriesPassport", employees.SeriesPassport);
+                command.Parameters.AddWithValue("@NumberPassport", employees.NumberPassport);
+                command.Parameters.AddWithValue("@PassportIssued", employees.PassportIssued);
+                command.Parameters.Add("@DataPassportIssued", MySqlDbType.Date).Value = employees.DatePassportIssued.Date;
+                command.Parameters.AddWithValue("@UnicodePassport", employees.UnitCodePassport);
+                command.Parameters.AddWithValue("@Login", employees.Login);
+                command.Parameters.AddWithValue("@Password", employees.Password);
+                command.Parameters.AddWithValue("@WordAccess", employees.WordAccess);
+                command.Parameters.AddWithValue("@City", employees.City);
+                command.Parameters.AddWithValue("@Address", employees.Address);
+                command.Parameters.AddWithValue("@Id_Employees", IDataSave.idStr);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+        public async Task<IDataSave.Employees> EmployeesSelect(MySqlConnection mysqlconn)
+        {
+            IDataSave.Employees employees = new IDataSave.Employees();
+            string query = @"SELECT
+                        e.First_Name,
+                        e.Second_Name,
+                        e.Middle_Name,
+                        j.JobTitle,
+                        e.Number_Phone,
+                        e.Email,
+                        e.Serias_Passport,
+                        e.Number_Passport,
+                        e.Passport_Issued,
+                        e.Date_Pasport_Issued,
+                        e.Unit_Code_Passport,
+                        e.Login,
+                        e.Password,
+                        e.Word_Access,
+                        c.NameCity,
+                        e.Address
+                    FROM
+                        employees e
+                    LEFT JOIN
+                        jobtitle j ON e.IdJobTitle = j.IdJobTitle
+                    LEFT JOIN
+                        city c ON e.IdCity = c.IdCity
+                    WHERE
+                        e.Id_Employees = @Id_Employees";
+
+            using (MySqlCommand command = new MySqlCommand(query, mysqlconn))
+            {
+                command.Parameters.AddWithValue("@Id_Employees", IDataSave.idStr);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        employees.FirstName = reader["First_Name"] != DBNull.Value ? reader["First_Name"].ToString() : null;
+                        employees.SecondName = reader["Second_Name"] != DBNull.Value ? reader["Second_Name"].ToString() : null;
+                        employees.MiddleName = reader["Middle_Name"] != DBNull.Value ? reader["Middle_Name"].ToString() : null;
+                        employees.JobTitle = reader["JobTitle"] != DBNull.Value ? reader["JobTitle"].ToString() : null;
+                        employees.NumberPhone = reader["Number_Phone"] != DBNull.Value ? reader["Number_Phone"].ToString() : null;
+                        employees.Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : null;
+                        employees.SeriesPassport = reader["Serias_Passport"] != DBNull.Value ? reader["Serias_Passport"].ToString() : null;
+                        employees.NumberPassport = reader["Number_Passport"] != DBNull.Value ? reader["Number_Passport"].ToString() : null;
+                        employees.PassportIssued = reader["Passport_Issued"] != DBNull.Value ? reader["Passport_Issued"].ToString() : null;
+                        employees.DatePassportIssued = reader["Date_Pasport_Issued"] != DBNull.Value ? Convert.ToDateTime(reader["Date_Pasport_Issued"]) : DateTime.Now;
+                        employees.UnitCodePassport = reader["Unit_Code_Passport"] != DBNull.Value ? reader["Unit_Code_Passport"].ToString() : null;
+                        employees.Login = reader["Login"] != DBNull.Value ? reader["Login"].ToString() : null;
+                        employees.Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : null;
+                        employees.WordAccess = reader["Word_Access"] != DBNull.Value ? reader["Word_Access"].ToString() : null;
+                        employees.City = reader["NameCity"] != DBNull.Value ? reader["NameCity"].ToString() : null;
+                        employees.Address = reader["Address"] != DBNull.Value ? reader["Address"].ToString() : null;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Сотрудник не найден");
+                        IDataSave.Employees employeesTeps = new IDataSave.Employees();
+                        return employeesTeps;
+                    }
+                }
+            }
+            return employees;
+        }
+        public async Task Add_Visits(IDataSave.Visits v, MySqlConnection connection)
+        {
+            try
+            {
+                string query = @"
+                INSERT INTO vet_clinic.visits (Id_Pet, Id_Doctor, Data_Visits, Time_Visits, Id_Service)
+                VALUES (@Pet, @Doctor, @Data_Visits, @Time_Visits, (SELECT Id_Service from service where Service = @service));";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Pet", v.Pets);
+                    command.Parameters.AddWithValue("@Doctor", v.Employees);
+                    command.Parameters.AddWithValue("@Data_Visits", v.Date.Date);
+                    command.Parameters.AddWithValue("@Time_Visits", v.Time.TimeOfDay);
+                    command.Parameters.AddWithValue("@service", v.Serviced);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+                
+            }
+            catch (MySqlException ex)
+            {
+                // Log the error, re-throw, or handle as appropriate for your application.
+                Console.WriteLine($"Database error: {ex.Message}");
+                throw; // Re-throw to propagate the exception up the call stack.
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions (e.g., null reference, type conversion).
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw;
+            }
+        }
+        public async Task Update_Visits(MySqlConnection connection, IDataSave.Visits v)
+        {
+            string query = @"UPDATE 
+                                visits
+                            SET
+                                Id_Pet = @Pet,
+                                Id_Doctor = @Doctor,
+                                Data_Visits = @Data_Visits,
+                                Time_Visits = @Time_Visits,
+                                Id_Service = (SELECT Id_Service FROM service WHERE Service = @service)
+                            WHERE Id_Visits = @IdVisits;";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Pet", v.Pets);
+                command.Parameters.AddWithValue("@Doctor", v.Employees);
+                command.Parameters.AddWithValue("@Data_Visits", v.Date.Date);
+                command.Parameters.AddWithValue("@Time_Visits", v.Time.TimeOfDay);
+                command.Parameters.AddWithValue("@service", v.Serviced);
+                command.Parameters.AddWithValue("@IdVisits", IDataSave.idStr);
+
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+        public async Task<IDataSave.Visits> Select_Visits(MySqlConnection connection)
+        {
+            IDataSave.Visits v;
+            string query = @"SELECT
+                                visits.Id_Pet,
+                                visits.Id_Doctor,
+                                visits.Data_Visits,
+                                visits.Time_Visits,
+                                service.Service
+                            FROM visits
+                            INNER JOIN service
+                            ON visits.Id_Service = service.Id_Service;
+            ";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        v.Pets = Convert.ToInt32(reader["Id_Pet"] != DBNull.Value ? reader["Id_Pet"] : null);
+                        v.Employees = Convert.ToInt32(reader["Id_Doctor"] != DBNull.Value ? reader["Id_Doctor"] : null);
+                        v.Date = Convert.ToDateTime(reader["Data_Visits"] != DBNull.Value ? reader["Data_Visits"] : null);
+                        v.Time = Convert.ToDateTime(reader["Time_Visits"] != DBNull.Value ? reader["Data_Visits"] : null);
+                        v.Serviced = reader["Service"] != DBNull.Value ? reader["Service"].ToString() : null;
+                        return v;
+                    }
+                }
+            }
+            IDataSave.Visits a = new IDataSave.Visits
+            {
+
+            };
+            return a;
         }
     }
 }

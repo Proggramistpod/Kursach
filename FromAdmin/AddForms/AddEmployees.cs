@@ -12,6 +12,8 @@ namespace WindowsFormsApp4
 {
     public partial class AddEmployees : Form
     {
+        private DatabaseConnectionManager _connectionManager = new DatabaseConnectionManager();
+        private MySQLQerty mySQLQerty = new MySQLQerty();
         bool Add;
         public AddEmployees(bool isAdd)
         {
@@ -19,43 +21,63 @@ namespace WindowsFormsApp4
             InitializeComponent();
         }
 
-        private void Employees_Load(object sender, EventArgs e)
+        private async void Employees_Load(object sender, EventArgs e)
         {
-
+            await _connectionManager.ConnectionOpen();
+            cmbBoxFactCity.Items.AddRange(IDataSave.NameСity);
+            cmbBoxTitle.Items.AddRange(IDataSave.NameJobTitle);
+            if (!Add)
+            {
+                IDataSave.Employees empl = await mySQLQerty.EmployeesSelect(_connectionManager.GetConnection());
+                txtFirstName.Text = empl.FirstName;
+                txtSecondName.Text = empl.SecondName;
+                txtMiddleNAme.Text = empl.MiddleName;
+                cmbBoxTitle.Text = empl.JobTitle;
+                txtNumberTel.Text = empl.NumberPhone;
+                txtEmail.Text = empl.Email;
+                cmbBoxFactCity.Text = empl.City;
+                txtFactSteet.Text = empl.Address;
+                txtSeralPasport.Text = empl.SeriesPassport;
+                txtNumberPasport.Text = empl.NumberPassport; 
+                txtWhenPasport.Text = empl.PassportIssued;
+                datePasport.Value = empl.DatePassportIssued != DateTime.MinValue ? empl.DatePassportIssued : DateTime.Today;
+                txtBoxUnitCode.Text = empl.UnitCodePassport;
+                txtLogin.Text = empl.Login;
+                txtPassword.Text = empl.Password;
+            }
+            await _connectionManager.ConnectionClose();
         }
-        //public string FirstName;
-        //public string SecondName;
-        //public string MiddleName;
-        //public string JobTitle;
-        //public string NumberPhone;
-        //public string Email;
-        //public string SeriesPassport;
-        //public string NumberPassport;
-        //public string PassportIssued;
-        //public DateTime DatePassportIssued;
-        //public string UnitCodePassport;
-        //public string Login;
-        //public string Password;
-        //public int LevelAccess;
-        //public string WordAccess;
-        private void btnAdd_Click(object sender, EventArgs e)
+
+        private async void btnAdd_Click(object sender, EventArgs e)
         {
+            if (datePasport.Value < DateTime.Today.AddYears(-70))
+            {
+                MessageBox.Show("Дата паспорта не может быть старше 70 лет");
+                return;
+            }
+            await _connectionManager.ConnectionOpen();
            IDataSave.Employees empl = new IDataSave.Employees();
             empl.FirstName = txtFirstName.Text;
             empl.SecondName = txtSecondName.Text;
             empl.MiddleName = txtMiddleNAme.Text;
-            empl.JobTitle = cmbTitle.Text;
+            empl.JobTitle = cmbBoxTitle.Text;
             empl.NumberPhone = txtNumberTel.Text;
             empl.Email = txtEmail.Text;
+            empl.City = cmbBoxFactCity.Text;
+            empl.Address  = txtFactSteet.Text;
             empl.SeriesPassport = txtSeralPasport.Text;
-            empl.NumberPassport = txtSeralPasport.Text;
+            empl.NumberPassport = txtNumberPasport.Text;
+            empl.PassportIssued = txtWhenPasport.Text;
             empl.DatePassportIssued = datePasport.Value;
             empl.UnitCodePassport = txtBoxUnitCode.Text;
             empl.Login = txtLogin.Text;
             empl.Password = txtPassword.Text;
-            empl.LevelAccess = Convert.ToInt32(cmbBoxLvlAccess.Text);
-             
-            
+
+            if (Add)
+                await mySQLQerty.AddEmployes(empl, _connectionManager.GetConnection());
+            else
+                await mySQLQerty.ChangeData_Employees(_connectionManager.GetConnection(), empl);
+            await _connectionManager.ConnectionClose();
         }
     }
 }

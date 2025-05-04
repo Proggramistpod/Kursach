@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp4.FromAdmin.AddForms;
 
 namespace WindowsFormsApp4
 {
@@ -66,6 +67,10 @@ namespace WindowsFormsApp4
             IDataSave.idStr = Convert.ToInt32(dataGridView1.Rows[dataGridView1.SelectedRows[0].Index].Tag);
             switch (Index)
             {
+                case 0:
+                    AddVisits v = new AddVisits(true);
+                    v.Show();
+                    break;
                 case 2:
                     AddSQLOwnerAndPets a = new AddSQLOwnerAndPets(true);
                     a.Show();                                      
@@ -87,6 +92,10 @@ namespace WindowsFormsApp4
             IDataSave.idStr = Convert.ToInt32(dataGridView1.Rows[dataGridView1.SelectedRows[0].Index].Tag);
             switch (Index)
             {
+                case 0:
+                    AddVisits v = new AddVisits(false);
+                    v.Show();
+                    break;
                 case 2:
                     AddSQLOwnerAndPets a = new AddSQLOwnerAndPets(false);
                     a.Show();

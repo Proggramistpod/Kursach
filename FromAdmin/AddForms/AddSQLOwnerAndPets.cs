@@ -40,30 +40,30 @@ namespace WindowsFormsApp4
                 MessageBox.Show("Ошибка", "Ошибка. Выберите пол", MessageBoxButtons.OK);
                 return;
             }
-                await _connectionManager.ConnectionOpen();
+            IDataSave.OwnerPets OP = new IDataSave.OwnerPets()
+            {
+                firstName = txtFirstName.Text,
+                secondName = txtSecondName.Text,
+                middleName = txtMiddleNAme.Text,
+                numberPhone = txtNumberTel.Text,
+                email = txtEmail.Text,
+                city = cmbBox_City.Text,
+                address = txtAddres.Text,
+            };
+            IDataSave.Pets p = new IDataSave.Pets
+            {
+                petName = txtPetName.Text,
+                species = cmbBox_Species.Text,
+                breed = txtBreed.Text,
+                color = txtColar.Text,
+                sex = Sex,
+                mark = txtMark.Text
+            };
+            await _connectionManager.ConnectionOpen();
             if(isAdd)
             {
                 if(txtFirstName.Text != "" || txtSecondName.Text != "" || txtAddres.Text != "" || txtPetName.Text != "" || txtPetName.Text != "" || cmbBox_Species.Text != "" || txtBreed.Text != "")
                 {
-                    IDataSave.OwnerPets OP = new IDataSave.OwnerPets()
-                    {
-                        firstName = txtFirstName.Text,
-                        secondName = txtSecondName.Text,
-                        middleName = txtMiddleNAme.Text,
-                        numberPhone = txtNumberTel.Text,
-                        email = txtEmail.Text,
-                        city = cmbBox_City.Text,
-                        address = txtAddres.Text,
-                    };
-                    IDataSave.Pets p = new IDataSave.Pets
-                    {
-                        petName = txtPetName.Text,
-                        species = cmbBox_Species.Text,
-                        breed = txtBreed.Text,
-                        color = txtColar.Text,
-                        sex = Sex,
-                        mark = txtMark.Text
-                    };
                     await mySQLQerty.AddDate_OwnerPets(_connectionManager.GetConnection(), p, OP);
                 }
                 else
@@ -74,7 +74,7 @@ namespace WindowsFormsApp4
             }
             else if (!isAdd)
             {
-               
+                await mySQLQerty.ChangeData_OwnerPets(_connectionManager.GetConnection(), OP, p);
             }
             await _connectionManager.ConnectionClose();
         }
@@ -110,8 +110,13 @@ namespace WindowsFormsApp4
                     rdBtnSexM.Checked = true;
                     rdBtnSexF.Checked = false;
                 }
+                btnAdd.Text = "Изменить";
             }
-            cmbBox_City.Items.AddRange(IDataSave.NameСity);
+            else
+            {
+                btnAdd.Text = "Добавить";
+            }
+                cmbBox_City.Items.AddRange(IDataSave.NameСity);
             cmbBox_Species.Items.AddRange(IDataSave.NameSpecies);
         }
     }

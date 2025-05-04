@@ -57,7 +57,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txtBreed = new System.Windows.Forms.TextBox();
             this.txtPetName = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -109,7 +109,6 @@
             // cmbBox_City
             // 
             this.cmbBox_City.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.cmbBox_City.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbBox_City.FormattingEnabled = true;
             this.cmbBox_City.Location = new System.Drawing.Point(6, 226);
             this.cmbBox_City.Name = "cmbBox_City";
@@ -225,7 +224,6 @@
             // cmbBox_Species
             // 
             this.cmbBox_Species.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.cmbBox_Species.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbBox_Species.FormattingEnabled = true;
             this.cmbBox_Species.Location = new System.Drawing.Point(7, 54);
             this.cmbBox_Species.Name = "cmbBox_Species";
@@ -337,15 +335,15 @@
             this.txtPetName.Size = new System.Drawing.Size(100, 20);
             this.txtPetName.TabIndex = 0;
             // 
-            // button1
+            // btnAdd
             // 
-            this.button1.Location = new System.Drawing.Point(614, 271);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(113, 29);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "Добавить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnAdd.Location = new System.Drawing.Point(614, 271);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(113, 29);
+            this.btnAdd.TabIndex = 17;
+            this.btnAdd.Text = "Добавить";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.button1_Click);
             // 
             // AddSQLOwnerAndPets
             // 
@@ -353,7 +351,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(739, 312);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "AddSQLOwnerAndPets";
@@ -394,10 +392,10 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox txtBreed;
         private System.Windows.Forms.TextBox txtPetName;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox cmbBox_City;
+        private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.RadioButton rdBtnSexF;
         private System.Windows.Forms.RadioButton rdBtnSexM;
-        private System.Windows.Forms.ComboBox cmbBox_Species;
+        public System.Windows.Forms.ComboBox cmbBox_City;
+        public System.Windows.Forms.ComboBox cmbBox_Species;
     }
 }

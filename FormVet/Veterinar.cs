@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlX.XDevAPI.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -74,6 +75,7 @@ namespace WindowsFormsApp4
 
         private void ExitsMain_Click(object sender, EventArgs e)
         {
+            DialogResult d = MessageBox.Show("", "", MessageBoxButtons.YesNoCancel);
             Atorisation a = new Atorisation();
             a.Show();
             this.Hide();
@@ -91,6 +93,8 @@ namespace WindowsFormsApp4
                 case 2:
                     await mySQLQerty.ShowDataGrisView_TypeService(_connectionManager.GetConnection(), dataGridView1);
                     break;
+                default:
+                    return;
             }
         }
     }
