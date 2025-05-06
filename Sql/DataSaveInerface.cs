@@ -9,11 +9,9 @@ namespace WindowsFormsApp4
 {
     internal class IDataSave
     {
-        public static int idPets, IdOwner;
         public static object idEmployees { get; set; }
         public static int LevelAccess { get; set; }
         public static int idStr { get; set; }
-        public static bool isAdd { get; set; }
         public static string[] NameDiagnosis { get; set; }
         public static string[] NameСity { get; set; }
         public static string[] NameSpecies { get; set; }
@@ -69,6 +67,11 @@ namespace WindowsFormsApp4
             public string Name;
             public string Description;
             public int Price;
+        }
+        public struct Descrip
+        {
+            public string Name;
+            public string Description;
         }
     }
 }

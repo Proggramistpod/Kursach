@@ -1,10 +1,12 @@
 ﻿using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -110,6 +112,58 @@ namespace WindowsFormsApp4.Sql
                 {
                     MessageBox.Show($"Непредвиденная ошибка. {e}");
                 }
+            }
+        }
+        public async Task<string> ListTable(string query, MySqlConnection connection, string result)
+        {
+            string a = "";
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", IDataSave.idStr);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (reader.Read())
+                            return a = Convert.ToString(reader[result], CultureInfo.InvariantCulture);
+                        else
+                            return null;
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+                return a;
+            }
+        }
+        public static async Task<bool> DeleteRecordAsync(MySqlConnection connection, string tableName, string idColumnName, string idValue)
+        {
+            string query = $"DELETE FROM `{tableName}` WHERE `{idColumnName}` = @idValue;"; // Важно использовать обратные кавычки для имен таблиц и столбцов
+
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idValue", idValue);
+
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                    if (rowsAffected > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Запись с {idColumnName} = {idValue} не найдена в таблице {tableName}."); 
+                        return false; 
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка при удалении записи из таблицы {tableName}: {ex.Message}");
+                return false; 
             }
         }
     }

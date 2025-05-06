@@ -61,7 +61,8 @@
             "Диагнозы",
             "Сотрудники",
             "Города",
-            "Виды"});
+            "Виды",
+            "Должность"});
             this.cmbBoxTable.Location = new System.Drawing.Point(12, 33);
             this.cmbBoxTable.Name = "cmbBoxTable";
             this.cmbBoxTable.Size = new System.Drawing.Size(121, 21);
@@ -104,6 +105,7 @@
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Удалить запись";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // menuStrip1
             // 

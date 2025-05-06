@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -866,6 +867,260 @@ namespace WindowsFormsApp4
                 await command.ExecuteNonQueryAsync();
             }
         }
+        public async Task<String> Select_City(MySqlConnection connection)
+        {
+            string query = @"SELECT
+	                            NameCity
+                            FROM
+	                            city
+                            WHERE
+	                            idCity = @Id;"
+           ;
+            return await GenerlyInterface.ListTable(query, connection, "NameCity");
+        }
+        public async Task Update_City(MySqlConnection connection, string City)
+        {
+            string query = @"UPDATE city
+                             SET
+	                            NameCity = @Name
+                            WHERE
+	                            idCity = @Id;"
+           ;
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", idStr);
+                    command.Parameters.AddWithValue("@Name", City);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public async Task Add_City(MySqlConnection connection, string City)
+        {
+            string query = @"INSERT INTO city (NameCity) VALUES (@Name)"
+           ;
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", City);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public async Task<string> Select_Species(MySqlConnection connection)
+        {
+            string query = @"SELECT NameSpecies FROM species WHERE IdAnimal = @Id;";
+            return await GenerlyInterface.ListTable(query, connection, "NameSpecies");
+        }
+        public async Task Update_Species(MySqlConnection connection, string Species)
+        {
+            string query = @"UPDATE species
+                             SET
+	                            NameSpecies = @Name
+                            WHERE
+	                            IdAnimal = @Id;"
+           ;
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", idStr);
+                    command.Parameters.AddWithValue("@Name", Species);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public async Task Add_Species(MySqlConnection connection, string Species)
+        {
+            string query = @"INSERT INTO species (NameSpecies) VALUES (@Species)";
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Species", Species);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public async Task ShowDataGrid_JobTitle(MySqlConnection connection, DataGridView dataGridView)
+        {
+            string query = @"SELECT 
+                                IdJobTitle,
+                                JobTitle AS 'Должность'
+                            FROM
+                                jobtitle";
+            await GenerlyInterface.ShowDataGridView(connection, dataGridView, query, "IdJobTitle");
+        }
+        public async Task<string> Select_JobTitle(MySqlConnection connection)
+        {
+            string query = @"SELECT 
+                                JobTitle
+                            FROM
+                                jobtitle";
+            return await GenerlyInterface.ListTable(query, connection, "JobTitle");
+        }
+        public async Task Update_JobTitle(MySqlConnection connection, string job) 
+        {
+            string query = @"UPDATE jobtitle
+                             SET
+	                            JobTitle = @Name
+                            WHERE
+	                            IdJobTitle = @Id;"
+           ;
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", idStr);
+                    command.Parameters.AddWithValue("@Name", job);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public async Task Add_JobTitle(MySqlConnection connection, string job) 
+        {
+            string query = @"INSERT INTO jobtitle (JobTitle) VALUES (@Job)";
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Job", job);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public async Task<IDataSave.Descrip> Select_Diagnosis(MySqlConnection connection)
+        {
+            IDataSave.Descrip descrip = new IDataSave.Descrip();
+            string query = @"SELECT NameDiagnosis, Description FROM diagnosis WHERE idDiagnosis = @Id;";
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", IDataSave.idStr);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (reader.Read())
+                        {
+                            descrip.Name = reader["NameDiagnosis"].ToString();
+                            descrip.Description = reader["Description"].ToString();
+                            return descrip;
+                        }
+                        return descrip;
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                IDataSave.Descrip descript = new IDataSave.Descrip();
+                MessageBox.Show($"Ошибка: {ex.Message}");
+                return descript;
+            }
+        }
+        public async Task Add_Diagnosis(MySqlConnection connection, IDataSave.Descrip descrip)
+        {
+            string query = @"INSERT INTO diagnosis (NameDignosis, Description) VALUE (@Name, @Description);";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Name", descrip.Name);
+                command.Parameters.AddWithValue("@Description", descrip.Description);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+        public async Task Update_Diagnosis(MySqlConnection connection, IDataSave.Descrip descrip)
+        {
+            string query = @"UPDETE diagnosis SET NameDignosis = @Name, Description = @Description) WHERE idDiagnosis = @Id;";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Name", descrip.Name);
+                command.Parameters.AddWithValue("@Description", descrip.Description);
+                command.Parameters.AddWithValue("@Id", IDataSave.idStr);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+        public async Task DeletTable(string NameTable, MySqlConnection mySqlConnection, string TableId)
+        {
+            await GenerlyInterface.DeleteRecordAsync(mySqlConnection, NameTable, TableId, IDataSave.idStr.ToString());
+        }
+        public async Task<bool> DeleteOwnerAndPetsAsync(MySqlConnection connection)
+        {
+            string ownerId = idStr.ToString();
+            // Проверяем входные данные
+            if (string.IsNullOrEmpty(ownerId))
+            {
+                MessageBox.Show("ID владельца не может быть пустым.");
+                return false;
+            }
 
+            try
+            {
+                // Начинаем транзакцию
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // 1. Удаляем животных, принадлежащих владельцу
+                        await DeletePetsByOwnerAsync(connection, transaction, ownerId);
+
+                        // 2. Удаляем владельца
+                        await GenerlyInterface.DeleteRecordAsync(connection, "owner_pets", "id_Owner", ownerId); // Используем уже существующую функцию
+
+
+                        // Если все прошло успешно, подтверждаем транзакцию
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Если произошла ошибка, откатываем транзакцию
+                        transaction.Rollback();
+                        MessageBox.Show($"Ошибка при удалении владельца и питомцев: {ex.Message}");
+                        return false;
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Ошибка подключения к базе данных: {ex.Message}");
+                return false;
+            }
+        }
+
+
+        private static async Task DeletePetsByOwnerAsync(MySqlConnection connection, MySqlTransaction transaction, string ownerId)
+        {
+            string query = "DELETE FROM pets WHERE Id_pets IN (SELECT id_pets FROM owner_pets WHERE id_Owner = @ownerId);";
+            using (MySqlCommand command = new MySqlCommand(query, connection, transaction))
+            {
+                command.Parameters.AddWithValue("@ownerId", ownerId);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
     }
 }

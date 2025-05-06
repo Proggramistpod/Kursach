@@ -68,7 +68,7 @@ namespace WindowsFormsApp4
             }
         }
 
-        private async void Veterinar_Load(object sender, EventArgs e)
+        private void Veterinar_Load(object sender, EventArgs e)
         {
             cmbBox_Table.SelectedIndex = 1;
         }

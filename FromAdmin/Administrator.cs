@@ -19,6 +19,7 @@ namespace WindowsFormsApp4
     //Сотрудники 4
     //Города 5
     //Виды животных 6
+    //Должность 7
     public partial class Administrator : Form
     {
         private DatabaseConnectionManager _connectionManager = new DatabaseConnectionManager();
@@ -56,6 +57,9 @@ namespace WindowsFormsApp4
                 case 6:
                     await mySQLQerty.ShowDataGridView_Species(_connectionManager.GetConnection(), dataGridView1);
                     break;
+                case 7:
+                    await mySQLQerty.ShowDataGrid_JobTitle(_connectionManager.GetConnection(), dataGridView1);
+                    break;
                 default:
                     return;
             }
@@ -75,6 +79,10 @@ namespace WindowsFormsApp4
                     AddService s = new AddService(true);
                     s.Show();
                     break;
+                case 3:
+                    AddListsDescription ald = new AddListsDescription(true);
+                    ald.Show();
+                    break;
                 case 2:
                     AddSQLOwnerAndPets a = new AddSQLOwnerAndPets(true);
                     a.Show();                                      
@@ -82,6 +90,18 @@ namespace WindowsFormsApp4
                 case 4:
                     AddEmployees f = new AddEmployees(true);
                     f.Show();
+                    break;
+                case 5:
+                    AddLists l = new AddLists("city", true);
+                    l.Show();
+                    break;
+                case 6:
+                    AddLists sp = new AddLists("species", true);
+                    sp.Show();
+                    break;
+                case 7:
+                    AddLists sps = new AddLists("species", true);
+                    sps.Show();
                     break;
             }
         }
@@ -108,9 +128,25 @@ namespace WindowsFormsApp4
                     AddSQLOwnerAndPets a = new AddSQLOwnerAndPets(false);
                     a.Show();
                     break;
+                case 3:
+                    AddListsDescription ald = new AddListsDescription(false);
+                    ald.Show();
+                    break;
                 case 4:
                     AddEmployees f = new AddEmployees(false);
                     f.Show();
+                    break;
+                case 5:
+                    AddLists l = new AddLists("city", false);
+                    l.Show();
+                    break;
+                case 6:
+                    AddLists sp = new AddLists("species", false);
+                    sp.Show();
+                    break;
+                case 7:
+                    AddLists sps = new AddLists("job", false);
+                    sps.Show();
                     break;
             }
         }
@@ -119,5 +155,46 @@ namespace WindowsFormsApp4
         {
             IDataSave.idStr = -1;
         }
+
+        private async void btnDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult = MessageBox.Show("","", MessageBoxButtons.YesNo);
+            if (DialogResult == DialogResult.Yes) 
+                switch (Index)
+                {
+                    case 0:
+                        await mySQLQerty.DeletTable("visits", _connectionManager.GetConnection(), "Id_Visits");
+                        break;
+                    case 1:
+                        await mySQLQerty.DeletTable("service", _connectionManager.GetConnection(), "Id_service");
+                        break;
+                    case 2:
+                        await mySQLQerty.DeleteOwnerAndPetsAsync(_connectionManager.GetConnection());
+                        break;
+                    case 3:
+                        await mySQLQerty.DeletTable("diagnosis", _connectionManager.GetConnection(), "IdDiagnosis");
+                        break;
+                    case 4:
+                        await mySQLQerty.DeletTable("employees", _connectionManager.GetConnection(), "Id_Employees");
+                        break;
+                    case 5:
+                        await mySQLQerty.DeletTable("city", _connectionManager.GetConnection(), "idCity");
+                        break;
+                    case 6:
+                        await mySQLQerty.DeletTable("species", _connectionManager.GetConnection(), "IdAnimal");
+                        break;
+                    case 7:
+                        await mySQLQerty.DeletTable("jobtitle", _connectionManager.GetConnection(), "IdJobTitle");
+                        break;
+                }
+        }
+        //Визиты 0
+        //Сервис 1
+        //Владельцы животных и Животные 2
+        //Диагнозы 3
+        //Сотрудники 4
+        //Города 5
+        //Виды животных 6
+        //Должность 7
     }
 }
