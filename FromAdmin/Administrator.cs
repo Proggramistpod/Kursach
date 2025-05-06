@@ -71,6 +71,10 @@ namespace WindowsFormsApp4
                     AddVisits v = new AddVisits(true);
                     v.Show();
                     break;
+                case 1:
+                    AddService s = new AddService(true);
+                    s.Show();
+                    break;
                 case 2:
                     AddSQLOwnerAndPets a = new AddSQLOwnerAndPets(true);
                     a.Show();                                      
@@ -95,6 +99,10 @@ namespace WindowsFormsApp4
                 case 0:
                     AddVisits v = new AddVisits(false);
                     v.Show();
+                    break;
+                case 1:
+                    AddService s = new AddService(false);
+                    s.Show();
                     break;
                 case 2:
                     AddSQLOwnerAndPets a = new AddSQLOwnerAndPets(false);

@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -120,27 +121,9 @@ namespace WindowsFormsApp4
 
         public async Task ShowDataGrisView_TypeService(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
-            string query = "SELECT Service AS 'Услуга', Price AS 'Цена', Description AS 'Описание' FROM service";
-            using (MySqlCommand mySqlCommand = new MySqlCommand(query, mySqlConnection))
-            {
-                try
-                {
-                    using (MySqlDataAdapter myDataAdapter = new MySqlDataAdapter(mySqlCommand))
-                    {
-                        DataTable DT = new DataTable();
-                        await myDataAdapter.FillAsync(DT);
-                        dataGridView.DataSource = DT;
-                        foreach (DataGridViewColumn column in dataGridView.Columns)
-                        {
-                            column.DefaultCellStyle.NullValue = "-";
-                        }
-                    }
-                }
-                catch (MySqlException e)
-                {
-                    MessageBox.Show($"Не предвиденная ошибка. {e}");
-                }
-            }
+            string query = "SELECT Id_Service, Service AS 'Услуга', Price AS 'Цена', Description AS 'Описание' FROM service";
+            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Service");
+
         }
         public async Task ShowDataGrisView_AllVisits(MySqlConnection mySqlConnection, DataGridView dataGridView) //Показывает ВСЕ ВИЗИТЫ
         {
@@ -151,7 +134,6 @@ namespace WindowsFormsApp4
                             p.Breed AS 'Порода животного',
                             s.NameSpecies AS 'Вид животного',
                             v.Data_Visits AS 'Дата визита',
-                            v.Time_Visits AS 'Время визита',
                             ser.Service AS 'Тип услуги',
                             v.Serviced AS 'Оказано'
                         FROM visits AS v
@@ -721,15 +703,14 @@ namespace WindowsFormsApp4
             try
             {
                 string query = @"
-                INSERT INTO vet_clinic.visits (Id_Pet, Id_Doctor, Data_Visits, Time_Visits, Id_Service)
-                VALUES (@Pet, @Doctor, @Data_Visits, @Time_Visits, (SELECT Id_Service from service where Service = @service));";
+                INSERT INTO avisits (Id_Pet, Id_Doctor, Data_Visits, Id_Service)
+                VALUES (@Pet, @Doctor, @Data_Visits, (SELECT Id_Service from service where Service = @service));";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@Pet", v.Pets);
-                    command.Parameters.AddWithValue("@Doctor", v.Employees);
-                    command.Parameters.AddWithValue("@Data_Visits", v.Date.Date);
-                    command.Parameters.AddWithValue("@Time_Visits", v.Time.TimeOfDay);
+                    command.Parameters.AddWithValue("@Pet", MySqlDbType.Int32).Value = v.Pets;
+                    command.Parameters.AddWithValue("@Doctor", MySqlDbType.Int32).Value = v.Employees;
+                    command.Parameters.AddWithValue("@Data_Visits", MySqlDbType.DateTime).Value = v.Date;
                     command.Parameters.AddWithValue("@service", v.Serviced);
 
                     await command.ExecuteNonQueryAsync();
@@ -757,7 +738,6 @@ namespace WindowsFormsApp4
                                 Id_Pet = @Pet,
                                 Id_Doctor = @Doctor,
                                 Data_Visits = @Data_Visits,
-                                Time_Visits = @Time_Visits,
                                 Id_Service = (SELECT Id_Service FROM service WHERE Service = @service)
                             WHERE Id_Visits = @IdVisits;";
             using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -765,7 +745,6 @@ namespace WindowsFormsApp4
                 command.Parameters.AddWithValue("@Pet", v.Pets);
                 command.Parameters.AddWithValue("@Doctor", v.Employees);
                 command.Parameters.AddWithValue("@Data_Visits", v.Date.Date);
-                command.Parameters.AddWithValue("@Time_Visits", v.Time.TimeOfDay);
                 command.Parameters.AddWithValue("@service", v.Serviced);
                 command.Parameters.AddWithValue("@IdVisits", IDataSave.idStr);
 
@@ -779,22 +758,22 @@ namespace WindowsFormsApp4
                                 visits.Id_Pet,
                                 visits.Id_Doctor,
                                 visits.Data_Visits,
-                                visits.Time_Visits,
                                 service.Service
                             FROM visits
                             INNER JOIN service
-                            ON visits.Id_Service = service.Id_Service;
+                            ON visits.Id_Service = service.Id_Service
+							WHERE visits.Id_Service = @visits;
             ";
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
+                command.Parameters.AddWithValue("@visits", idStr);
                 using (var reader = await command.ExecuteReaderAsync())
                 {
                     if (await reader.ReadAsync())
                     {
                         v.Pets = Convert.ToInt32(reader["Id_Pet"] != DBNull.Value ? reader["Id_Pet"] : null);
                         v.Employees = Convert.ToInt32(reader["Id_Doctor"] != DBNull.Value ? reader["Id_Doctor"] : null);
-                        v.Date = Convert.ToDateTime(reader["Data_Visits"] != DBNull.Value ? reader["Data_Visits"] : null);
-                        v.Time = Convert.ToDateTime(reader["Time_Visits"] != DBNull.Value ? reader["Data_Visits"] : null);
+                        v.Date = Convert.ToDateTime(reader["Data_Visits"] != DBNull.Value ? reader["Data_Visits"] : DateTime.Now);
                         v.Serviced = reader["Service"] != DBNull.Value ? reader["Service"].ToString() : null;
                         return v;
                     }
@@ -806,5 +785,87 @@ namespace WindowsFormsApp4
             };
             return a;
         }
+        public async Task<IDataSave.Service> Select_Service(MySqlConnection connection)
+        {
+            IDataSave.Service S = new IDataSave.Service { };
+            string query = @"SELECT
+	                            Service,
+	                            Price,
+	                            Description
+                            FROM
+	                            service
+                            WHERE
+	                            Id_Service = @ServiceId;"
+            ;
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ServiceId", idStr);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            S.Name = reader["Service"].ToString();
+                            S.Description = reader["Description"].ToString();
+                            S.Price = Convert.ToInt32(reader["Price"], CultureInfo.InvariantCulture);
+                            return S;
+                        }
+                        else
+                        {
+                            return S;
+                        }
+                    }
+                }
+            }
+            catch (MySqlException ex) 
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+                IDataSave.Service a = new IDataSave.Service
+                {
+
+                };
+                return a;
+            } 
+        }
+        public async Task Update_Service(MySqlConnection connection, IDataSave.Service Service)
+        {
+            string query = @"UPDATE service
+                            SET
+                                Service = @Service,
+                                Price = @Price,
+                                Description = @Description
+                            WHERE
+                                Id_Service = @ServiceId;";
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ServiceId", idStr);
+                    command.Parameters.AddWithValue("@Service", Service.Name);
+                    command.Parameters.AddWithValue("@Price", Service.Price);
+                    command.Parameters.AddWithValue("@Description", Service.Description);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (MySqlException ex) 
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public async Task Add_Service(MySqlConnection connection, IDataSave.Service Service)
+        {
+            string query = @"INSERT INTO service (Service, Price, Description)
+                            VALUES (@service, @price, @description);";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+
+                command.Parameters.AddWithValue("@service", Service.Name);
+                command.Parameters.AddWithValue("@price", MySqlDbType.Int32).Value = Service.Price;
+                command.Parameters.AddWithValue("@description", Service.Description);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
     }
 }

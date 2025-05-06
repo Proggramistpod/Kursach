@@ -62,8 +62,13 @@ namespace WindowsFormsApp4
             public int Pets;
             public int Employees;
             public DateTime Date;
-            public DateTime Time;
             public string Serviced;
+        }
+        public struct Service
+        {
+            public string Name;
+            public string Description;
+            public int Price;
         }
     }
 }

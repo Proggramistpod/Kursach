@@ -25,21 +25,16 @@ namespace WindowsFormsApp4.FromAdmin.AddForms
         private async void AddVisits_Load(object sender, EventArgs e)
         {
             cmbBoxService.Items.AddRange(IDataSave.NameService);
-            dataGridViewPet.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewPet.MultiSelect = false;
-            dataGridViewEmployees.SelectionMode = DataGridViewSelectionMode.FullRowSelect; 
-            dataGridViewEmployees.MultiSelect = false;
             await _connectionManager.ConnectionOpen();
             await mySQLQerty.ShowDataGrisView_OwnerPets(_connectionManager.GetConnection(), dataGridViewPet);
             await mySQLQerty.ShowDataGridView_Employees(_connectionManager.GetConnection(), dataGridViewEmployees);
-            
             if (!Add)
             {
                 IDataSave.Visits visits = await mySQLQerty.Select_Visits(_connectionManager.GetConnection());
                 SelectRows(dataGridViewPet, Convert.ToString(visits.Pets));
                 SelectRows(dataGridViewEmployees, Convert.ToString(visits.Employees));
                 cmbBoxService.Text = visits.Serviced;
-                TimePicker.Value = DateTime.Today.Add(visits.Time.TimeOfDay);
+                TimePicker.Value = DateTime.Today.Add(visits.Date.TimeOfDay);
                 DatePicker1.Value = Convert.ToDateTime(visits.Date.Date);
             }
             await _connectionManager.ConnectionClose();
@@ -64,7 +59,6 @@ namespace WindowsFormsApp4.FromAdmin.AddForms
         {
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                // Проверяем, что Tag не null и соответствует искомому значению
                 if (row.Tag != null && row.Tag.ToString() == targetTag)
                 {
                     row.DefaultCellStyle.BackColor = Color.LightBlue;

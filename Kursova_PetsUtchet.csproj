@@ -110,6 +110,12 @@
     <Compile Include="FromAdmin\AddForms\AddListsDescription.Designer.cs">
       <DependentUpon>AddListsDescription.cs</DependentUpon>
     </Compile>
+    <Compile Include="FromAdmin\AddForms\AddService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FromAdmin\AddForms\AddService.Designer.cs">
+      <DependentUpon>AddService.cs</DependentUpon>
+    </Compile>
     <Compile Include="FromAdmin\AddForms\AddSQLOwnerAndPets.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FromAdmin\AddForms\AddListsDescription.resx">
       <DependentUpon>AddListsDescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FromAdmin\AddForms\AddService.resx">
+      <DependentUpon>AddService.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FromAdmin\AddForms\AddSQLOwnerAndPets.resx">
       <DependentUpon>AddSQLOwnerAndPets.cs</DependentUpon>
