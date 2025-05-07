@@ -134,12 +134,6 @@
     <Compile Include="FromAdmin\Administrator.Designer.cs">
       <DependentUpon>Administrator.cs</DependentUpon>
     </Compile>
-    <Compile Include="OtherForm\ReviewForms.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OtherForm\ReviewForms.Designer.cs">
-      <DependentUpon>ReviewForms.cs</DependentUpon>
-    </Compile>
     <Compile Include="Sql\ChekSQL.cs" />
     <Compile Include="Sql\DataSaveInerface.cs" />
     <Compile Include="FormVet\DiagnosisPet.cs">
@@ -160,7 +154,7 @@
     <Compile Include="FormVet\Veterinar.Designer.cs">
       <DependentUpon>Veterinar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sql\GenerlyInterface.cs" />
+    <Compile Include="Sql\ForInterfaceSQL.cs" />
     <Compile Include="Sql\MySQLQerty.cs" />
     <Compile Include="Configs\DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -204,9 +198,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormVet\Veterinar.resx">
       <DependentUpon>Veterinar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OtherForm\ReviewForms.resx">
-      <DependentUpon>ReviewForms.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

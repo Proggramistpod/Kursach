@@ -28,12 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtSeralPasport = new System.Windows.Forms.TextBox();
-            this.txtNumberPasport = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txtEmail = new System.Windows.Forms.TextBox();
-            this.txtNumberTel = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -52,7 +49,6 @@
             this.datePasport = new System.Windows.Forms.DateTimePicker();
             this.label14 = new System.Windows.Forms.Label();
             this.txtWhenPasport = new System.Windows.Forms.TextBox();
-            this.txtBoxUnitCode = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
             this.cmbBoxFactCity = new System.Windows.Forms.ComboBox();
@@ -61,23 +57,11 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txtWord = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
+            this.txtNumberPasport = new System.Windows.Forms.MaskedTextBox();
+            this.txtSeralPasport = new System.Windows.Forms.MaskedTextBox();
+            this.txtBoxUnitCode = new System.Windows.Forms.MaskedTextBox();
+            this.txtNumberTel = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
-            // 
-            // txtSeralPasport
-            // 
-            this.txtSeralPasport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtSeralPasport.Location = new System.Drawing.Point(385, 12);
-            this.txtSeralPasport.Name = "txtSeralPasport";
-            this.txtSeralPasport.Size = new System.Drawing.Size(164, 26);
-            this.txtSeralPasport.TabIndex = 26;
-            // 
-            // txtNumberPasport
-            // 
-            this.txtNumberPasport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtNumberPasport.Location = new System.Drawing.Point(385, 44);
-            this.txtNumberPasport.Name = "txtNumberPasport";
-            this.txtNumberPasport.Size = new System.Drawing.Size(164, 26);
-            this.txtNumberPasport.TabIndex = 25;
             // 
             // label4
             // 
@@ -106,14 +90,6 @@
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(136, 26);
             this.txtEmail.TabIndex = 22;
-            // 
-            // txtNumberTel
-            // 
-            this.txtNumberTel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtNumberTel.Location = new System.Drawing.Point(30, 137);
-            this.txtNumberTel.Name = "txtNumberTel";
-            this.txtNumberTel.Size = new System.Drawing.Size(136, 26);
-            this.txtNumberTel.TabIndex = 21;
             // 
             // label3
             // 
@@ -248,7 +224,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label13.Location = new System.Drawing.Point(394, 137);
+            this.label13.Location = new System.Drawing.Point(585, 167);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(119, 24);
             this.label13.TabIndex = 40;
@@ -277,24 +253,16 @@
             // txtWhenPasport
             // 
             this.txtWhenPasport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtWhenPasport.Location = new System.Drawing.Point(398, 166);
+            this.txtWhenPasport.Location = new System.Drawing.Point(355, 167);
             this.txtWhenPasport.Name = "txtWhenPasport";
             this.txtWhenPasport.Size = new System.Drawing.Size(224, 26);
             this.txtWhenPasport.TabIndex = 43;
-            // 
-            // txtBoxUnitCode
-            // 
-            this.txtBoxUnitCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtBoxUnitCode.Location = new System.Drawing.Point(398, 202);
-            this.txtBoxUnitCode.Name = "txtBoxUnitCode";
-            this.txtBoxUnitCode.Size = new System.Drawing.Size(152, 26);
-            this.txtBoxUnitCode.TabIndex = 45;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label15.Location = new System.Drawing.Point(556, 202);
+            this.label15.Location = new System.Drawing.Point(585, 203);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(191, 24);
             this.label15.TabIndex = 44;
@@ -315,7 +283,7 @@
             // 
             this.cmbBoxFactCity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbBoxFactCity.FormattingEnabled = true;
-            this.cmbBoxFactCity.Location = new System.Drawing.Point(398, 234);
+            this.cmbBoxFactCity.Location = new System.Drawing.Point(427, 235);
             this.cmbBoxFactCity.Name = "cmbBoxFactCity";
             this.cmbBoxFactCity.Size = new System.Drawing.Size(152, 28);
             this.cmbBoxFactCity.TabIndex = 47;
@@ -324,7 +292,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(554, 234);
+            this.label9.Location = new System.Drawing.Point(583, 235);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(66, 24);
             this.label9.TabIndex = 48;
@@ -333,16 +301,16 @@
             // txtFactSteet
             // 
             this.txtFactSteet.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtFactSteet.Location = new System.Drawing.Point(398, 270);
+            this.txtFactSteet.Location = new System.Drawing.Point(376, 271);
             this.txtFactSteet.Name = "txtFactSteet";
-            this.txtFactSteet.Size = new System.Drawing.Size(152, 26);
+            this.txtFactSteet.Size = new System.Drawing.Size(203, 26);
             this.txtFactSteet.TabIndex = 49;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(556, 270);
+            this.label10.Location = new System.Drawing.Point(585, 271);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(64, 24);
             this.label10.TabIndex = 50;
@@ -366,11 +334,55 @@
             this.label17.TabIndex = 54;
             this.label17.Text = "Секретное слово";
             // 
+            // txtNumberPasport
+            // 
+            this.txtNumberPasport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.txtNumberPasport.Location = new System.Drawing.Point(495, 44);
+            this.txtNumberPasport.Mask = "000000";
+            this.txtNumberPasport.Name = "txtNumberPasport";
+            this.txtNumberPasport.Size = new System.Drawing.Size(62, 26);
+            this.txtNumberPasport.TabIndex = 55;
+            this.txtNumberPasport.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PressKeyOnlyNumeric);
+            // 
+            // txtSeralPasport
+            // 
+            this.txtSeralPasport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.txtSeralPasport.Location = new System.Drawing.Point(518, 12);
+            this.txtSeralPasport.Mask = "0000";
+            this.txtSeralPasport.Name = "txtSeralPasport";
+            this.txtSeralPasport.Size = new System.Drawing.Size(39, 26);
+            this.txtSeralPasport.TabIndex = 56;
+            this.txtSeralPasport.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PressKeyOnlyNumeric);
+            // 
+            // txtBoxUnitCode
+            // 
+            this.txtBoxUnitCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.txtBoxUnitCode.Location = new System.Drawing.Point(514, 203);
+            this.txtBoxUnitCode.Mask = "000-000";
+            this.txtBoxUnitCode.Name = "txtBoxUnitCode";
+            this.txtBoxUnitCode.Size = new System.Drawing.Size(65, 26);
+            this.txtBoxUnitCode.TabIndex = 57;
+            this.txtBoxUnitCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PressKeyOnlyNumeric);
+            // 
+            // txtNumberTel
+            // 
+            this.txtNumberTel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.txtNumberTel.Location = new System.Drawing.Point(52, 135);
+            this.txtNumberTel.Mask = "(999) 000-0000";
+            this.txtNumberTel.Name = "txtNumberTel";
+            this.txtNumberTel.Size = new System.Drawing.Size(116, 26);
+            this.txtNumberTel.TabIndex = 58;
+            this.txtNumberTel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PressKeyOnlyNumeric);
+            // 
             // AddEmployees
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 437);
+            this.Controls.Add(this.txtNumberTel);
+            this.Controls.Add(this.txtBoxUnitCode);
+            this.Controls.Add(this.txtSeralPasport);
+            this.Controls.Add(this.txtNumberPasport);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.txtWord);
             this.Controls.Add(this.label10);
@@ -378,7 +390,6 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.cmbBoxFactCity);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.txtBoxUnitCode);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.txtWhenPasport);
             this.Controls.Add(this.label14);
@@ -392,12 +403,9 @@
             this.Controls.Add(this.cmbBoxTitle);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtSeralPasport);
-            this.Controls.Add(this.txtNumberPasport);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtEmail);
-            this.Controls.Add(this.txtNumberTel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
@@ -413,13 +421,9 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtSeralPasport;
-        private System.Windows.Forms.TextBox txtNumberPasport;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtEmail;
-        private System.Windows.Forms.TextBox txtNumberTel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -438,7 +442,6 @@
         private System.Windows.Forms.DateTimePicker datePasport;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox txtWhenPasport;
-        private System.Windows.Forms.TextBox txtBoxUnitCode;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.ComboBox cmbBoxFactCity;
@@ -447,5 +450,9 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtWord;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.MaskedTextBox txtNumberPasport;
+        private System.Windows.Forms.MaskedTextBox txtSeralPasport;
+        private System.Windows.Forms.MaskedTextBox txtBoxUnitCode;
+        private System.Windows.Forms.MaskedTextBox txtNumberTel;
     }
 }

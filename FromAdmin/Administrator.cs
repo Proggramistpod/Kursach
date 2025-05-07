@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp4.FromAdmin.AddForms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsFormsApp4
 {
@@ -85,7 +86,7 @@ namespace WindowsFormsApp4
                     break;
                 case 2:
                     AddSQLOwnerAndPets a = new AddSQLOwnerAndPets(true);
-                    a.Show();                                      
+                    a.Show();
                     break;
                 case 4:
                     AddEmployees f = new AddEmployees(true);
@@ -158,8 +159,9 @@ namespace WindowsFormsApp4
 
         private async void btnDelete_Click(object sender, EventArgs e)
         {
-            DialogResult = MessageBox.Show("","", MessageBoxButtons.YesNo);
-            if (DialogResult == DialogResult.Yes) 
+            await _connectionManager.ConnectionOpen();
+            DialogResult = MessageBox.Show("Проверка", "Уверены что хотите удалить эту запись?", MessageBoxButtons.YesNo);
+            if (DialogResult == DialogResult.Yes)
                 switch (Index)
                 {
                     case 0:
@@ -187,14 +189,36 @@ namespace WindowsFormsApp4
                         await mySQLQerty.DeletTable("jobtitle", _connectionManager.GetConnection(), "IdJobTitle");
                         break;
                 }
+            await _connectionManager.ConnectionClose();
         }
-        //Визиты 0
-        //Сервис 1
-        //Владельцы животных и Животные 2
-        //Диагнозы 3
-        //Сотрудники 4
-        //Города 5
-        //Виды животных 6
-        //Должность 7
+
+        private void textBoxSerch_TextChanged(object sender, EventArgs e)
+        {
+            var value = textBoxSerch.Text.Trim();
+            int cnt = 0, numRow = 0;
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+                var row = dataGridView1.Rows[i];
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    if (row.Cells[j].Value.ToString().Contains(value))
+                    {
+                        row.Selected = true;
+                        cnt++; numRow = i;
+                        break;
+
+                    }
+            }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            DialogResult d = MessageBox.Show("Уверены", "Уверены что хотите выйти из аккаунта?", MessageBoxButtons.YesNoCancel);
+            if (d == DialogResult.Yes)
+            {            
+            Atorisation a = new Atorisation();
+            a.Show();
+            this.Hide();
+            }
+        }
     }
 }

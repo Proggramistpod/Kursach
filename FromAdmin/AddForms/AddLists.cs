@@ -26,10 +26,13 @@ namespace WindowsFormsApp4.FromAdmin.AddForms
 
         private async void btnAccess_Click(object sender, EventArgs e)
         {
+
             string inf = textBox1.Text;
             await _connectionManager.ConnectionOpen();
-            switch (tabl)
-            {
+            DialogResult = MessageBox.Show("Проверка", "Уверены?", MessageBoxButtons.YesNo);
+            if (DialogResult == DialogResult.Yes)
+                switch (tabl)
+                {
                 case "city":
                     if (!add)
                         await mySQLQerty.Update_City(_connectionManager.GetConnection(), inf);
@@ -48,7 +51,7 @@ namespace WindowsFormsApp4.FromAdmin.AddForms
                     else if (add)
                         await mySQLQerty.Add_JobTitle(_connectionManager.GetConnection(), inf);
                     break;
-            }
+                }
             await _connectionManager.ConnectionClose();
         }
 
@@ -60,14 +63,17 @@ namespace WindowsFormsApp4.FromAdmin.AddForms
                 case "city":
                     if (!add)
                         textBox1.Text = await mySQLQerty.Select_City(_connectionManager.GetConnection());
+                    this.Text = "Города";
                     break;
                 case "species":
                     if (!add)
                         textBox1.Text = await mySQLQerty.Select_Species(_connectionManager.GetConnection());
+                    this.Text = "Виды";
                     break;
                 case "job":
                     if (!add)
                         textBox1.Text = await mySQLQerty.Select_JobTitle(_connectionManager.GetConnection());
+                    this.Text = "Работы";
                     break;
             }
             await _connectionManager.ConnectionClose();

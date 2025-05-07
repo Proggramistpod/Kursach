@@ -42,24 +42,27 @@ namespace WindowsFormsApp4.FromAdmin.AddForms
 
         private async void btnSure_Click(object sender, EventArgs e)
         {
-            try
+            DialogResult = MessageBox.Show("Проверка", "Уверены?", MessageBoxButtons.YesNo);
+            if (DialogResult == DialogResult.Yes)
             {
-                IDataSave.Service serv;
-                serv.Name = txtBoxName.Text;
-                serv.Price = int.Parse(txtBoxPrice.Text);
-                serv.Description = txtBoxDescription.Text;
-                await _connectionManager.ConnectionOpen();
-                if (!Add)
-                    await mySQLQerty.Update_Service(_connectionManager.GetConnection(), serv);
-                else if (Add)
-                    await mySQLQerty.Add_Service(_connectionManager.GetConnection(), serv);
-                await _connectionManager.ConnectionClose();
+                try
+                {
+                    IDataSave.Service serv;
+                    serv.Name = txtBoxName.Text;
+                    serv.Price = int.Parse(txtBoxPrice.Text);
+                    serv.Description = txtBoxDescription.Text;
+                    await _connectionManager.ConnectionOpen();
+                    if (!Add)
+                        await mySQLQerty.Update_Service(_connectionManager.GetConnection(), serv);
+                    else if (Add)
+                        await mySQLQerty.Add_Service(_connectionManager.GetConnection(), serv);
+                    await _connectionManager.ConnectionClose();
+                }
+                catch
+                {
+                    MessageBox.Show("Ошибка, заполните данные правильно", "Ошибка", MessageBoxButtons.OK);
+                }
             }
-            catch 
-            {
-                MessageBox.Show("Ошибка, заполните данные правильно", "Ошибка", MessageBoxButtons.OK);
-            }
-            
         }
     }
 }

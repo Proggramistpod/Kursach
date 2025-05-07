@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,6 +25,7 @@ namespace WindowsFormsApp4
         private async void Employees_Load(object sender, EventArgs e)
         {
             await _connectionManager.ConnectionOpen();
+            await mySQLQerty.GetListName(_connectionManager.GetConnection());
             cmbBoxFactCity.Items.AddRange(IDataSave.NameСity);
             cmbBoxTitle.Items.AddRange(IDataSave.NameJobTitle);
             if (!Add)
@@ -55,29 +57,60 @@ namespace WindowsFormsApp4
                 MessageBox.Show("Дата паспорта не может быть старше 70 лет");
                 return;
             }
-            await _connectionManager.ConnectionOpen();
-           IDataSave.Employees empl = new IDataSave.Employees();
-            empl.FirstName = txtFirstName.Text;
-            empl.SecondName = txtSecondName.Text;
-            empl.MiddleName = txtMiddleNAme.Text;
-            empl.JobTitle = cmbBoxTitle.Text;
-            empl.NumberPhone = txtNumberTel.Text;
-            empl.Email = txtEmail.Text;
-            empl.City = cmbBoxFactCity.Text;
-            empl.Address  = txtFactSteet.Text;
-            empl.SeriesPassport = txtSeralPasport.Text;
-            empl.NumberPassport = txtNumberPasport.Text;
-            empl.PassportIssued = txtWhenPasport.Text;
-            empl.DatePassportIssued = datePasport.Value;
-            empl.UnitCodePassport = txtBoxUnitCode.Text;
-            empl.Login = txtLogin.Text;
-            empl.Password = txtPassword.Text;
+            ValidateEmailTextBox(txtEmail);
+            DialogResult = MessageBox.Show("Проверка", "Уверены?", MessageBoxButtons.YesNo);
+            if (DialogResult == DialogResult.Yes)
+            {
+                await _connectionManager.ConnectionOpen();
+                IDataSave.Employees empl = new IDataSave.Employees();
+                empl.FirstName = txtFirstName.Text;
+                empl.SecondName = txtSecondName.Text;
+                empl.MiddleName = txtMiddleNAme.Text;
+                empl.JobTitle = cmbBoxTitle.Text;
+                empl.NumberPhone = txtNumberTel.Text;
+                empl.Email = txtEmail.Text;
+                empl.City = cmbBoxFactCity.Text;
+                empl.Address = txtFactSteet.Text;
+                empl.SeriesPassport = txtSeralPasport.Text;
+                empl.NumberPassport = txtNumberPasport.Text;
+                empl.PassportIssued = txtWhenPasport.Text;
+                empl.DatePassportIssued = datePasport.Value;
+                empl.UnitCodePassport = txtBoxUnitCode.Text;
+                empl.Login = txtLogin.Text;
+                empl.Password = txtPassword.Text;
 
-            if (Add)
-                await mySQLQerty.AddEmployes(empl, _connectionManager.GetConnection());
-            else
-                await mySQLQerty.ChangeData_Employees(_connectionManager.GetConnection(), empl);
-            await _connectionManager.ConnectionClose();
+                if (Add)
+                    await mySQLQerty.AddEmployes(empl, _connectionManager.GetConnection());
+                else
+                    await mySQLQerty.ChangeData_Employees(_connectionManager.GetConnection(), empl);
+                await _connectionManager.ConnectionClose();
+            }
+        }
+       private void PressKeyOnlyNumeric(object sender, KeyPressEventArgs e)
+        {
+            char ch = e.KeyChar;
+            if (!Char.IsDigit(ch) && ch != 8)
+            {
+                e.Handled = true;
+            }
+        }
+        private bool ValidateEmailTextBox(TextBox textBox)
+        {
+            string email = textBox.Text;
+
+            try
+            {
+                MailAddress address = new MailAddress(email); 
+                return true;
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Неверный формат адреса электронной почты.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBox.Focus();
+                textBox.SelectAll();
+                return false;
+            }
         }
     }
 }
+

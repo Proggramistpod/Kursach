@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using WindowsFormsApp4.Sql;
 using static WindowsFormsApp4.IDataSave;
 
@@ -19,7 +20,7 @@ namespace WindowsFormsApp4
 {
     internal class MySQLQerty
     {
-        GenerlyInterface GenerlyInterface = new GenerlyInterface();
+        ForInterfaceSQL InterfaceSQL = new ForInterfaceSQL();
         public async Task GetListName(MySqlConnection mySqlConnection)
         {
             string qwerty = "SELECT NameDiagnosis FROM Diagnosis";
@@ -30,11 +31,11 @@ namespace WindowsFormsApp4
                 string sqlQerySpecies = "SELECT NameSpecies from species;";
                 string sqlQeuryJobTitle = "SELECT JobTitle from jobtitle";
                 string sqlQeuryService = "SELECT Service from service";
-                IDataSave.NameDiagnosis = await GenerlyInterface.ArrayFromDB(sqlQueryDiagnosis, "NameDiagnosis", mySqlConnection);
-                IDataSave.NameSpecies = await GenerlyInterface.ArrayFromDB(sqlQerySpecies, "NameSpecies", mySqlConnection);
-                IDataSave.NameСity = await GenerlyInterface.ArrayFromDB(sqlQeryCity, "NameCity", mySqlConnection);
-                IDataSave.NameJobTitle = await GenerlyInterface.ArrayFromDB(sqlQeuryJobTitle, "JobTitle", mySqlConnection);
-                IDataSave.NameService = await GenerlyInterface.ArrayFromDB(sqlQeuryService, "Service", mySqlConnection);
+                IDataSave.NameDiagnosis = await InterfaceSQL.ArrayFromDB(sqlQueryDiagnosis, "NameDiagnosis", mySqlConnection);
+                IDataSave.NameSpecies = await InterfaceSQL.ArrayFromDB(sqlQerySpecies, "NameSpecies", mySqlConnection);
+                IDataSave.NameСity = await InterfaceSQL.ArrayFromDB(sqlQeryCity, "NameCity", mySqlConnection);
+                IDataSave.NameJobTitle = await InterfaceSQL.ArrayFromDB(sqlQeuryJobTitle, "JobTitle", mySqlConnection);
+                IDataSave.NameService = await InterfaceSQL.ArrayFromDB(sqlQeuryService, "Service", mySqlConnection);
             }
         }
 
@@ -123,7 +124,7 @@ namespace WindowsFormsApp4
         public async Task ShowDataGrisView_TypeService(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
             string query = "SELECT Id_Service, Service AS 'Услуга', Price AS 'Цена', Description AS 'Описание' FROM service";
-            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Service");
+            await InterfaceSQL.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Service");
 
         }
         public async Task ShowDataGrisView_AllVisits(MySqlConnection mySqlConnection, DataGridView dataGridView) //Показывает ВСЕ ВИЗИТЫ
@@ -351,7 +352,7 @@ namespace WindowsFormsApp4
             }
             return pets.HasValue ? pets.Value : new Pets();
         }
-        public async Task AddDiagnosisPet(MySqlConnection mySqlConnection, string diagnosisName, int IdVisits)
+        public async Task AddDiagnosisPet(MySqlConnection mySqlConnection, string diagnosisName, int IdVisits, DateTime dateDiagnosis)
         {
             try
             {
@@ -359,12 +360,13 @@ namespace WindowsFormsApp4
                                 VALUE (
                                     (SELECT v.Id_Pet FROM visits v WHERE v.Id_Visits = @IdVisits),
                                     (SELECT idDiagnosis FROM diagnosis WHERE NameDiagnosis = @diagnosisName),
-                                    CURRENT_DATE()
+                                    @DateDiag
                                 );";
                 using (MySqlCommand mysqlcommand = new MySqlCommand(query, mySqlConnection))
                 {
                     mysqlcommand.Parameters.Add("@IdVisits", MySqlDbType.Int32).Value = IdVisits;
                     mysqlcommand.Parameters.Add("@diagnosisName", MySqlDbType.String).Value = diagnosisName;
+                    mysqlcommand.Parameters.Add("@DateDiag", MySqlDbType.Date).Value = dateDiagnosis.Date;
                     await mysqlcommand.ExecuteNonQueryAsync();
                 }
             }
@@ -392,26 +394,26 @@ namespace WindowsFormsApp4
                 );
 ";
 
-            using (MySqlCommand command = new MySqlCommand(query, conn))
-            {
-                command.Parameters.AddWithValue("@FirstName", employees.FirstName);
-                command.Parameters.AddWithValue("@SecondName", employees.SecondName);
-                command.Parameters.AddWithValue("@MiddleName", employees.MiddleName);
-                command.Parameters.AddWithValue("@JobTitle", employees.JobTitle);
-                command.Parameters.AddWithValue("@NumberPhone", employees.NumberPhone);
-                command.Parameters.AddWithValue("@Email", employees.Email);
-                command.Parameters.AddWithValue("@SeriesPassport", employees.SeriesPassport);
-                command.Parameters.AddWithValue("@NumberPassport", employees.NumberPassport);
-                command.Parameters.AddWithValue("@PassportIssued", employees.PassportIssued);
-                command.Parameters.Add("@DataPassportIssued", MySqlDbType.Date).Value = employees.DatePassportIssued.Date;
-                command.Parameters.AddWithValue("@UnicodePassport", employees.UnitCodePassport);
-                command.Parameters.AddWithValue("@Login", employees.Login);
-                command.Parameters.AddWithValue("@Password", employees.Password);
-                command.Parameters.AddWithValue("@WordAccess", employees.WordAccess);
-                command.Parameters.AddWithValue("@City", employees.City);
-                command.Parameters.AddWithValue("@Address", employees.Address);
-                await command.ExecuteNonQueryAsync();
-            }
+            var parameters = new Dictionary<string, object>
+    {
+        { "@FirstName", employees.FirstName },
+        { "@SecondName", employees.SecondName },
+        { "@MiddleName", employees.MiddleName },
+        { "@JobTitle", employees.JobTitle },
+        { "@NumberPhone", employees.NumberPhone },
+        { "@Email", employees.Email },
+        { "@SeriesPassport", employees.SeriesPassport },
+        { "@NumberPassport", employees.NumberPassport },
+        { "@PassportIssued", employees.PassportIssued },
+        { "@DataPassportIssued", employees.DatePassportIssued },  // Убрали .Date
+        { "@UnicodePassport", employees.UnitCodePassport },
+        { "@Login", employees.Login },
+        { "@Password", employees.Password },
+        { "@WordAccess", employees.WordAccess },
+        { "@City", employees.City },
+        { "@Address", employees.Address }
+    };
+           await ForInterfaceSQL.ExecuteNonQueryAsync(query, conn, parameters);
         }
         public async Task ShowDataGridView_Employees(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
@@ -425,7 +427,7 @@ namespace WindowsFormsApp4
                                 employees e
                             JOIN
                                 jobtitle j ON j.IdJobTitle = e.IdJobTitle";
-            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Employees");
+            await InterfaceSQL.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Employees");
         }
         public async Task ShowDataGridView_AllDiagnosis(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
@@ -435,7 +437,7 @@ namespace WindowsFormsApp4
                                 Description AS 'Описание'
                             FROM
                                 diagnosis;";
-            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "IdDiagnosis");
+            await InterfaceSQL.ShowDataGridView(mySqlConnection, dataGridView, query, "IdDiagnosis");
         }
         public async Task ShowDataGridView_City(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
@@ -444,7 +446,7 @@ namespace WindowsFormsApp4
                                 NameCity AS 'Название города'
                             FROM
                                 city;";
-            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "idCity");
+            await InterfaceSQL.ShowDataGridView(mySqlConnection, dataGridView, query, "idCity");
         }
         public async Task ShowDataGridView_Species(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
@@ -453,7 +455,7 @@ namespace WindowsFormsApp4
                                 NameSpecies AS 'Название вида'
                             FROM
                                 species;";
-            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "IdAnimal");
+            await InterfaceSQL.ShowDataGridView(mySqlConnection, dataGridView, query, "IdAnimal");
         }
         public async Task ShowDataGrisView_OwnerPets(MySqlConnection mySqlConnection, DataGridView dataGridView)
         {
@@ -473,7 +475,7 @@ namespace WindowsFormsApp4
                          pets  ON owner_pets.Id_pets = pets.Id_Pets
                      JOIN
                          species  ON pets.Species_Id = species.IdAnimal;";
-            await GenerlyInterface.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Owner");
+            await InterfaceSQL.ShowDataGridView(mySqlConnection, dataGridView, query, "Id_Owner");
         }
         public async Task ShowDataGrid_Visists(MySqlConnection mySqlConnection, DataGridView dataGridView) //Показывает визиты у опредленного врача
         {
@@ -492,7 +494,7 @@ namespace WindowsFormsApp4
                 JOIN species AS s ON p.Species_Id = s.IdAnimal 
                 JOIN service AS ser ON v.Id_Service = ser.Id_Service 
                 WHERE v.Id_Doctor = @employeeId;";
-            await GenerlyInterface.ShowDataGridView_WHEN(mySqlConnection, dataGridView, query, "Идентификатор визита", "@employeeId", Convert.ToInt32(IDataSave.idEmployees));
+            await InterfaceSQL.ShowDataGridView_WHEN(mySqlConnection, dataGridView, query, "Идентификатор визита", "@employeeId", Convert.ToInt32(IDataSave.idEmployees));
         }
         public async void ShowDataGrid_DiagnosisPet(MySqlConnection mySqlConnection, object Id, DataGridView dataGridView)
         {
@@ -501,8 +503,8 @@ namespace WindowsFormsApp4
 
                 string query = @"
                     SELECT
-                        dp.IdDiagnosis
-                        d.NameDiagnosis AS 'Диагноз',
+                        dp.IdDiagnosis,
+                        d.NameDiagnosis AS 'диагноз',
                         d.Description AS 'Описание',
                         dp.DateGetDiagnosis AS 'Дата выдачи'
                     FROM
@@ -513,7 +515,7 @@ namespace WindowsFormsApp4
                         visits v ON dp.IdPets = v.Id_Pet 
                     WHERE
                         v.Id_Visits = @VisitID;";
-                await GenerlyInterface.ShowDataGridView_WHEN(mySqlConnection, dataGridView, query, "IdDiagnosis", "@VisitID", Convert.ToInt32(Id));
+                await InterfaceSQL.ShowDataGridView_WHEN(mySqlConnection, dataGridView, query, "IdDiagnosis", "@VisitID", Convert.ToInt32(Id));
             }
             catch
             {
@@ -591,7 +593,7 @@ namespace WindowsFormsApp4
         public async Task ChangeData_Employees(MySqlConnection mysqlconn, IDataSave.Employees employees)
         {
 
-            string qury = @"UPDATE 
+            string query = @"UPDATE 
                                 employees
                             SET
                                 First_Name = @FirstName,
@@ -613,27 +615,27 @@ namespace WindowsFormsApp4
                             WHERE
                                 Id_Employees = @Id_Employees;"
             ;
-            using (MySqlCommand command = new MySqlCommand(qury, mysqlconn))
-            {
-                command.Parameters.AddWithValue("@FirstName", employees.FirstName);
-                command.Parameters.AddWithValue("@SecondName", employees.SecondName);
-                command.Parameters.AddWithValue("@MiddleName", employees.MiddleName);
-                command.Parameters.AddWithValue("@JobTitle", employees.JobTitle);
-                command.Parameters.AddWithValue("@NumberPhone", employees.NumberPhone);
-                command.Parameters.AddWithValue("@Email", employees.Email);
-                command.Parameters.AddWithValue("@SeriesPassport", employees.SeriesPassport);
-                command.Parameters.AddWithValue("@NumberPassport", employees.NumberPassport);
-                command.Parameters.AddWithValue("@PassportIssued", employees.PassportIssued);
-                command.Parameters.Add("@DataPassportIssued", MySqlDbType.Date).Value = employees.DatePassportIssued.Date;
-                command.Parameters.AddWithValue("@UnicodePassport", employees.UnitCodePassport);
-                command.Parameters.AddWithValue("@Login", employees.Login);
-                command.Parameters.AddWithValue("@Password", employees.Password);
-                command.Parameters.AddWithValue("@WordAccess", employees.WordAccess);
-                command.Parameters.AddWithValue("@City", employees.City);
-                command.Parameters.AddWithValue("@Address", employees.Address);
-                command.Parameters.AddWithValue("@Id_Employees", IDataSave.idStr);
-                await command.ExecuteNonQueryAsync();
-            }
+                var parameters = new Dictionary<string, object>
+                {
+                    { "@FirstName", employees.FirstName },
+                    { "@SecondName", employees.SecondName },
+                    { "@MiddleName", employees.MiddleName },
+                    { "@NumberPhone", employees.NumberPhone },
+                    { "@JobTitle", employees.JobTitle },
+                    { "@Email", employees.Email },
+                    { "@SeriesPassport", employees.SeriesPassport },
+                    { "@NumberPassport", employees.NumberPassport },
+                    { "@PassportIssued", employees.PassportIssued },
+                    { "@DataPassportIssued", employees.DatePassportIssued.Date }, 
+                    { "@UnicodePassport", employees.UnitCodePassport },
+                    { "@Login", employees.Login },
+                    { "@Password", employees.Password },
+                    { "@WordAccess", employees.WordAccess },
+                    { "@City", employees.City },
+                    { "@Address", employees.Address },
+                    { "@Id_Employees", IDataSave.idStr } // Не забываем Id_Employees
+                };
+                await ForInterfaceSQL.ExecuteNonQueryAsync(query, mysqlconn, parameters);
         }
         public async Task<IDataSave.Employees> EmployeesSelect(MySqlConnection mysqlconn)
         {
@@ -704,19 +706,16 @@ namespace WindowsFormsApp4
             try
             {
                 string query = @"
-                INSERT INTO avisits (Id_Pet, Id_Doctor, Data_Visits, Id_Service)
+                INSERT INTO visits (Id_Pet, Id_Doctor, Data_Visits, Id_Service)
                 VALUES (@Pet, @Doctor, @Data_Visits, (SELECT Id_Service from service where Service = @service));";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Pet", MySqlDbType.Int32).Value = v.Pets;
-                    command.Parameters.AddWithValue("@Doctor", MySqlDbType.Int32).Value = v.Employees;
-                    command.Parameters.AddWithValue("@Data_Visits", MySqlDbType.DateTime).Value = v.Date;
-                    command.Parameters.AddWithValue("@service", v.Serviced);
-
-                    await command.ExecuteNonQueryAsync();
-                }
-                
+                    var parameters = new Dictionary<string, object>
+                    {
+                        { "@Pet", v.Pets },
+                        { "@Doctor", v.Employees },
+                        { "@Data_Visits", v.Date },
+                        { "@service", v.Serviced }
+                    };
+                await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
             }
             catch (MySqlException ex)
             {
@@ -741,16 +740,16 @@ namespace WindowsFormsApp4
                                 Data_Visits = @Data_Visits,
                                 Id_Service = (SELECT Id_Service FROM service WHERE Service = @service)
                             WHERE Id_Visits = @IdVisits;";
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            var parameters = new Dictionary<string, object>
             {
-                command.Parameters.AddWithValue("@Pet", v.Pets);
-                command.Parameters.AddWithValue("@Doctor", v.Employees);
-                command.Parameters.AddWithValue("@Data_Visits", v.Date.Date);
-                command.Parameters.AddWithValue("@service", v.Serviced);
-                command.Parameters.AddWithValue("@IdVisits", IDataSave.idStr);
+                { "@Pet", v.Pets },
+                { "@Doctor", v.Employees },
+                { "@Data_Visits", v.Date }, // Убрали .Date, чтобы сохранить и время
+                { "@service", v.Serviced },
+                { "@IdVisits", IDataSave.idStr }
+            };
+            await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
 
-                await command.ExecuteNonQueryAsync();
-            }
         }
         public async Task<IDataSave.Visits> Select_Visits(MySqlConnection connection)
         {
@@ -838,33 +837,42 @@ namespace WindowsFormsApp4
                                 Description = @Description
                             WHERE
                                 Id_Service = @ServiceId;";
+            var parameters = new Dictionary<string, object>
+            {
+                { "@ServiceId", IDataSave.idStr },
+                { "@Service", Service.Name },
+                { "@Price", Service.Price },
+                { "@Description", Service.Description }
+            };
+
             try
             {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@ServiceId", idStr);
-                    command.Parameters.AddWithValue("@Service", Service.Name);
-                    command.Parameters.AddWithValue("@Price", Service.Price);
-                    command.Parameters.AddWithValue("@Description", Service.Description);
-                    await command.ExecuteNonQueryAsync();
-                }
+                await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
             }
-            catch (MySqlException ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка: {ex.Message}");
             }
+
         }
         public async Task Add_Service(MySqlConnection connection, IDataSave.Service Service)
         {
             string query = @"INSERT INTO service (Service, Price, Description)
                             VALUES (@service, @price, @description);";
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            var parameters = new Dictionary<string, object>
             {
+                { "@service", Service.Name },
+                { "@price", Service.Price },
+                { "@description", Service.Description }
+            };
 
-                command.Parameters.AddWithValue("@service", Service.Name);
-                command.Parameters.AddWithValue("@price", MySqlDbType.Int32).Value = Service.Price;
-                command.Parameters.AddWithValue("@description", Service.Description);
-                await command.ExecuteNonQueryAsync();
+            try
+            {
+                await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
         public async Task<String> Select_City(MySqlConnection connection)
@@ -876,7 +884,7 @@ namespace WindowsFormsApp4
                             WHERE
 	                            idCity = @Id;"
            ;
-            return await GenerlyInterface.ListTable(query, connection, "NameCity");
+            return await InterfaceSQL.ListTable(query, connection, "NameCity");
         }
         public async Task Update_City(MySqlConnection connection, string City)
         {
@@ -888,12 +896,13 @@ namespace WindowsFormsApp4
            ;
             try
             {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+
+                var parameters = new Dictionary<string, object>
                 {
-                    command.Parameters.AddWithValue("@Id", idStr);
-                    command.Parameters.AddWithValue("@Name", City);
-                    await command.ExecuteNonQueryAsync();
-                }
+                    { "@Id", IDataSave.idStr },
+                    { "@Name", City }
+                };
+                await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
             }
             catch (MySqlException ex)
             {
@@ -920,7 +929,7 @@ namespace WindowsFormsApp4
         public async Task<string> Select_Species(MySqlConnection connection)
         {
             string query = @"SELECT NameSpecies FROM species WHERE IdAnimal = @Id;";
-            return await GenerlyInterface.ListTable(query, connection, "NameSpecies");
+            return await InterfaceSQL.ListTable(query, connection, "NameSpecies");
         }
         public async Task Update_Species(MySqlConnection connection, string Species)
         {
@@ -932,12 +941,12 @@ namespace WindowsFormsApp4
            ;
             try
             {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                    var parameters = new Dictionary<string, object>
                 {
-                    command.Parameters.AddWithValue("@Id", idStr);
-                    command.Parameters.AddWithValue("@Name", Species);
-                    await command.ExecuteNonQueryAsync();
-                }
+                    { "@Id", IDataSave.idStr },
+                    { "@Name", Species }
+                };
+                    await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
             }
             catch (MySqlException ex)
             {
@@ -967,7 +976,7 @@ namespace WindowsFormsApp4
                                 JobTitle AS 'Должность'
                             FROM
                                 jobtitle";
-            await GenerlyInterface.ShowDataGridView(connection, dataGridView, query, "IdJobTitle");
+            await InterfaceSQL.ShowDataGridView(connection, dataGridView, query, "IdJobTitle");
         }
         public async Task<string> Select_JobTitle(MySqlConnection connection)
         {
@@ -975,7 +984,7 @@ namespace WindowsFormsApp4
                                 JobTitle
                             FROM
                                 jobtitle";
-            return await GenerlyInterface.ListTable(query, connection, "JobTitle");
+            return await InterfaceSQL.ListTable(query, connection, "JobTitle");
         }
         public async Task Update_JobTitle(MySqlConnection connection, string job) 
         {
@@ -987,12 +996,12 @@ namespace WindowsFormsApp4
            ;
             try
             {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                    var parameters = new Dictionary<string, object>
                 {
-                    command.Parameters.AddWithValue("@Id", idStr);
-                    command.Parameters.AddWithValue("@Name", job);
-                    await command.ExecuteNonQueryAsync();
-                }
+                    { "@Id", IDataSave.idStr },
+                    { "@Name", job }
+                };
+                    await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
             }
             catch (MySqlException ex)
             {
@@ -1045,28 +1054,44 @@ namespace WindowsFormsApp4
         }
         public async Task Add_Diagnosis(MySqlConnection connection, IDataSave.Descrip descrip)
         {
-            string query = @"INSERT INTO diagnosis (NameDignosis, Description) VALUE (@Name, @Description);";
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            string query = @"INSERT INTO diagnosis (NameDiagnosis, Description) VALUE (@Name, @Description);";
+            var parameters = new Dictionary<string, object>
             {
-                command.Parameters.AddWithValue("@Name", descrip.Name);
-                command.Parameters.AddWithValue("@Description", descrip.Description);
-                await command.ExecuteNonQueryAsync();
+                { "@Name", descrip.Name },
+                { "@Description", descrip.Description }
+            };
+
+            try
+            {
+                await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
         public async Task Update_Diagnosis(MySqlConnection connection, IDataSave.Descrip descrip)
         {
-            string query = @"UPDETE diagnosis SET NameDignosis = @Name, Description = @Description) WHERE idDiagnosis = @Id;";
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            string query = @"UPDETE diagnosis SET NameDiagnosis = @Name, Description = @Description) WHERE idDiagnosis = @Id;";
+            var parameters = new Dictionary<string, object>
             {
-                command.Parameters.AddWithValue("@Name", descrip.Name);
-                command.Parameters.AddWithValue("@Description", descrip.Description);
-                command.Parameters.AddWithValue("@Id", IDataSave.idStr);
-                await command.ExecuteNonQueryAsync();
+                { "@Name", descrip.Name },
+                { "@Description", descrip.Description },
+                { "@Id", IDataSave.idStr }
+            };
+
+            try
+            {
+                await ForInterfaceSQL.ExecuteNonQueryAsync(query, connection, parameters);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
         public async Task DeletTable(string NameTable, MySqlConnection mySqlConnection, string TableId)
         {
-            await GenerlyInterface.DeleteRecordAsync(mySqlConnection, NameTable, TableId, IDataSave.idStr.ToString());
+            await ForInterfaceSQL.DeleteRecordAsync(mySqlConnection, NameTable, TableId, IDataSave.idStr.ToString());
         }
         public async Task<bool> DeleteOwnerAndPetsAsync(MySqlConnection connection)
         {
@@ -1089,7 +1114,7 @@ namespace WindowsFormsApp4
                         await DeletePetsByOwnerAsync(connection, transaction, ownerId);
 
                         // 2. Удаляем владельца
-                        await GenerlyInterface.DeleteRecordAsync(connection, "owner_pets", "id_Owner", ownerId); // Используем уже существующую функцию
+                        await ForInterfaceSQL.DeleteRecordAsync(connection, "owner_pets", "id_Owner", ownerId); // Используем уже существующую функцию
 
 
                         // Если все прошло успешно, подтверждаем транзакцию

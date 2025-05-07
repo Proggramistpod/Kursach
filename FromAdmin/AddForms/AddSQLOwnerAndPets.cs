@@ -60,27 +60,30 @@ namespace WindowsFormsApp4
                 mark = txtMark.Text
             };
             await _connectionManager.ConnectionOpen();
-            if(isAdd)
-            {
-                if(txtFirstName.Text != "" || txtSecondName.Text != "" || txtAddres.Text != "" || txtPetName.Text != "" || txtPetName.Text != "" || cmbBox_Species.Text != "" || txtBreed.Text != "")
+            DialogResult = MessageBox.Show("Проверка", "Уверены?", MessageBoxButtons.YesNo);
+            if (DialogResult == DialogResult.Yes)
+                if (isAdd)
                 {
-                    await mySQLQerty.AddDate_OwnerPets(_connectionManager.GetConnection(), p, OP);
+                    if(txtFirstName.Text != "" || txtSecondName.Text != "" || txtAddres.Text != "" || txtPetName.Text != "" || txtPetName.Text != "" || cmbBox_Species.Text != "" || txtBreed.Text != "")
+                    {
+                        await mySQLQerty.AddDate_OwnerPets(_connectionManager.GetConnection(), p, OP);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ошибка", "Ошибка. Ввеидте везде значение", MessageBoxButtons.OK);
+                        return;
+                    }
                 }
-                else
+                else if (!isAdd)
                 {
-                    MessageBox.Show("Ошибка", "Ошибка. Ввеидте везде значение", MessageBoxButtons.OK);
-                    return;
+                    await mySQLQerty.ChangeData_OwnerPets(_connectionManager.GetConnection(), OP, p);
                 }
-            }
-            else if (!isAdd)
-            {
-                await mySQLQerty.ChangeData_OwnerPets(_connectionManager.GetConnection(), OP, p);
-            }
             await _connectionManager.ConnectionClose();
         }
 
         private async void AddSQLOwnerAndPets_Load(object sender, EventArgs e)
         {
+
             if (!isAdd)
             {
                 await _connectionManager.ConnectionOpen();

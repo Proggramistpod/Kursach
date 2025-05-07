@@ -27,10 +27,12 @@ namespace WindowsFormsApp4.FromAdmin.AddForms
             descrip.Name = txtBoxName.Text;
             descrip.Description = txtBoxDescript.Text;
             await _connectionManager.ConnectionOpen();
-            if (!Add)
-                await mySQLQerty.Update_Diagnosis(_connectionManager.GetConnection(), descrip);
-            else if (Add)
-                await mySQLQerty.Add_Diagnosis(_connectionManager.GetConnection(), descrip);
+            DialogResult = MessageBox.Show("Проверка", "Уверены?", MessageBoxButtons.YesNo);
+            if (DialogResult == DialogResult.Yes)
+                if (!Add)
+                    await mySQLQerty.Update_Diagnosis(_connectionManager.GetConnection(), descrip);
+                else if (Add)
+                    await mySQLQerty.Add_Diagnosis(_connectionManager.GetConnection(), descrip);
             await _connectionManager.ConnectionClose();
         }
 

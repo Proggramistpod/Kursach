@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp4.Sql
 {
-    internal class GenerlyInterface
+    internal class ForInterfaceSQL
     {
         public async Task<string[]> ArrayFromDB(string sqlQuery, string records, MySqlConnection mySqlConnection)
         {
@@ -139,7 +139,7 @@ namespace WindowsFormsApp4.Sql
         }
         public static async Task<bool> DeleteRecordAsync(MySqlConnection connection, string tableName, string idColumnName, string idValue)
         {
-            string query = $"DELETE FROM `{tableName}` WHERE `{idColumnName}` = @idValue;"; // Важно использовать обратные кавычки для имен таблиц и столбцов
+            string query = $"DELETE FROM `{tableName}` WHERE `{idColumnName}` = @idValue;";
 
             try
             {
@@ -166,6 +166,22 @@ namespace WindowsFormsApp4.Sql
                 return false; 
             }
         }
+        public static async Task ExecuteNonQueryAsync(string query, MySqlConnection connection, Dictionary<string, object> parameters = null)
+        {
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                if (parameters != null)
+                {
+                    foreach (var parameter in parameters)
+                    {
+                        command.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                    }
+                }
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
+
     }
 
 }

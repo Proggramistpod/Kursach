@@ -64,27 +64,33 @@
             // 
             // txtFirstName
             // 
+            this.txtFirstName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtFirstName.Location = new System.Drawing.Point(6, 29);
             this.txtFirstName.Name = "txtFirstName";
-            this.txtFirstName.Size = new System.Drawing.Size(100, 20);
+            this.txtFirstName.Size = new System.Drawing.Size(146, 24);
             this.txtFirstName.TabIndex = 0;
             // 
             // txtSecondName
             // 
+            this.txtSecondName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtSecondName.Location = new System.Drawing.Point(6, 55);
             this.txtSecondName.Name = "txtSecondName";
-            this.txtSecondName.Size = new System.Drawing.Size(100, 20);
+            this.txtSecondName.Size = new System.Drawing.Size(146, 24);
             this.txtSecondName.TabIndex = 1;
             // 
             // txtMiddleNAme
             // 
+            this.txtMiddleNAme.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtMiddleNAme.Location = new System.Drawing.Point(6, 81);
             this.txtMiddleNAme.Name = "txtMiddleNAme";
-            this.txtMiddleNAme.Size = new System.Drawing.Size(100, 20);
+            this.txtMiddleNAme.Size = new System.Drawing.Size(146, 24);
             this.txtMiddleNAme.TabIndex = 2;
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.cmbBox_City);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label7);
@@ -101,7 +107,7 @@
             this.groupBox1.Controls.Add(this.txtSecondName);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(348, 252);
+            this.groupBox1.Size = new System.Drawing.Size(348, 260);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Хозяин";
@@ -109,98 +115,112 @@
             // cmbBox_City
             // 
             this.cmbBox_City.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.cmbBox_City.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbBox_City.FormattingEnabled = true;
             this.cmbBox_City.Location = new System.Drawing.Point(6, 226);
             this.cmbBox_City.Name = "cmbBox_City";
-            this.cmbBox_City.Size = new System.Drawing.Size(131, 21);
+            this.cmbBox_City.Size = new System.Drawing.Size(146, 26);
             this.cmbBox_City.TabIndex = 30;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 210);
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(3, 207);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(37, 13);
+            this.label6.Size = new System.Drawing.Size(46, 16);
             this.label6.TabIndex = 15;
             this.label6.Text = "Город";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(140, 210);
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(155, 207);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(103, 13);
+            this.label7.Size = new System.Drawing.Size(130, 16);
             this.label7.TabIndex = 13;
             this.label7.Text = "Адрес проживания";
             // 
             // txtAddres
             // 
-            this.txtAddres.Location = new System.Drawing.Point(143, 226);
+            this.txtAddres.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtAddres.Location = new System.Drawing.Point(158, 226);
             this.txtAddres.Name = "txtAddres";
-            this.txtAddres.Size = new System.Drawing.Size(199, 20);
+            this.txtAddres.Size = new System.Drawing.Size(184, 24);
             this.txtAddres.TabIndex = 11;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(112, 152);
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label4.Location = new System.Drawing.Point(164, 154);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 13);
+            this.label4.Size = new System.Drawing.Size(69, 16);
             this.label4.TabIndex = 10;
             this.label4.Text = "Эл.Почта";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(112, 126);
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(164, 128);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(93, 13);
+            this.label5.Size = new System.Drawing.Size(119, 16);
             this.label5.TabIndex = 9;
             this.label5.Text = "Номер телефона";
             // 
             // txtEmail
             // 
+            this.txtEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtEmail.Location = new System.Drawing.Point(6, 149);
             this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(100, 20);
+            this.txtEmail.Size = new System.Drawing.Size(146, 24);
             this.txtEmail.TabIndex = 8;
             // 
             // txtNumberTel
             // 
+            this.txtNumberTel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtNumberTel.Location = new System.Drawing.Point(6, 123);
             this.txtNumberTel.Name = "txtNumberTel";
-            this.txtNumberTel.Size = new System.Drawing.Size(100, 20);
+            this.txtNumberTel.Size = new System.Drawing.Size(146, 24);
             this.txtNumberTel.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(112, 84);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(164, 86);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.Size = new System.Drawing.Size(70, 16);
             this.label3.TabIndex = 6;
             this.label3.Text = "Отчество";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(112, 32);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(164, 34);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 13);
+            this.label1.Size = new System.Drawing.Size(33, 16);
             this.label1.TabIndex = 4;
             this.label1.Text = "Имя";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(112, 58);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(164, 60);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.Size = new System.Drawing.Size(66, 16);
             this.label2.TabIndex = 5;
             this.label2.Text = "Фамилия";
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.cmbBox_Species);
             this.groupBox2.Controls.Add(this.rdBtnSexF);
             this.groupBox2.Controls.Add(this.rdBtnSexM);
@@ -216,7 +236,7 @@
             this.groupBox2.Controls.Add(this.txtPetName);
             this.groupBox2.Location = new System.Drawing.Point(366, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(348, 252);
+            this.groupBox2.Size = new System.Drawing.Size(363, 260);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Питомец";
@@ -224,10 +244,11 @@
             // cmbBox_Species
             // 
             this.cmbBox_Species.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.cmbBox_Species.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbBox_Species.FormattingEnabled = true;
             this.cmbBox_Species.Location = new System.Drawing.Point(7, 54);
             this.cmbBox_Species.Name = "cmbBox_Species";
-            this.cmbBox_Species.Size = new System.Drawing.Size(99, 21);
+            this.cmbBox_Species.Size = new System.Drawing.Size(134, 26);
             this.cmbBox_Species.TabIndex = 31;
             // 
             // rdBtnSexF
@@ -255,89 +276,99 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 136);
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.Location = new System.Drawing.Point(6, 133);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(54, 13);
+            this.label9.Size = new System.Drawing.Size(66, 16);
             this.label9.TabIndex = 13;
             this.label9.Text = "Приметы";
             // 
             // txtMark
             // 
+            this.txtMark.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtMark.Location = new System.Drawing.Point(6, 152);
             this.txtMark.Multiline = true;
             this.txtMark.Name = "txtMark";
-            this.txtMark.Size = new System.Drawing.Size(342, 94);
+            this.txtMark.Size = new System.Drawing.Size(336, 94);
             this.txtMark.TabIndex = 11;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label10.Location = new System.Drawing.Point(285, 88);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(27, 13);
+            this.label10.Size = new System.Drawing.Size(33, 16);
             this.label10.TabIndex = 10;
             this.label10.Text = "Пол";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(112, 110);
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.Location = new System.Drawing.Point(147, 112);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(39, 13);
+            this.label11.Size = new System.Drawing.Size(47, 16);
             this.label11.TabIndex = 9;
             this.label11.Text = "Окрас";
             // 
             // txtColar
             // 
+            this.txtColar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtColar.Location = new System.Drawing.Point(6, 107);
             this.txtColar.Name = "txtColar";
-            this.txtColar.Size = new System.Drawing.Size(100, 20);
+            this.txtColar.Size = new System.Drawing.Size(135, 24);
             this.txtColar.TabIndex = 7;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(112, 84);
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label12.Location = new System.Drawing.Point(147, 86);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(45, 13);
+            this.label12.Size = new System.Drawing.Size(57, 16);
             this.label12.TabIndex = 6;
             this.label12.Text = "Порода";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(112, 32);
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.Location = new System.Drawing.Point(147, 34);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(100, 13);
+            this.label13.Size = new System.Drawing.Size(127, 16);
             this.label13.TabIndex = 4;
             this.label13.Text = "Кличка животного";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(112, 58);
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label14.Location = new System.Drawing.Point(147, 60);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(26, 13);
+            this.label14.Size = new System.Drawing.Size(32, 16);
             this.label14.TabIndex = 5;
             this.label14.Text = "Вид";
             // 
             // txtBreed
             // 
+            this.txtBreed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtBreed.Location = new System.Drawing.Point(6, 81);
             this.txtBreed.Name = "txtBreed";
-            this.txtBreed.Size = new System.Drawing.Size(100, 20);
+            this.txtBreed.Size = new System.Drawing.Size(135, 24);
             this.txtBreed.TabIndex = 2;
             // 
             // txtPetName
             // 
+            this.txtPetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtPetName.Location = new System.Drawing.Point(6, 29);
             this.txtPetName.Name = "txtPetName";
-            this.txtPetName.Size = new System.Drawing.Size(100, 20);
+            this.txtPetName.Size = new System.Drawing.Size(135, 24);
             this.txtPetName.TabIndex = 0;
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(614, 271);
+            this.btnAdd.Location = new System.Drawing.Point(616, 278);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(113, 29);
             this.btnAdd.TabIndex = 17;

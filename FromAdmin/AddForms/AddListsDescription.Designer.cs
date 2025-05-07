@@ -37,42 +37,47 @@
             // 
             // txtBoxName
             // 
+            this.txtBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtBoxName.Location = new System.Drawing.Point(12, 34);
             this.txtBoxName.Name = "txtBoxName";
-            this.txtBoxName.Size = new System.Drawing.Size(174, 20);
+            this.txtBoxName.Size = new System.Drawing.Size(273, 22);
             this.txtBoxName.TabIndex = 0;
             // 
             // txtBoxDescript
             // 
+            this.txtBoxDescript.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtBoxDescript.Location = new System.Drawing.Point(12, 87);
             this.txtBoxDescript.Multiline = true;
             this.txtBoxDescript.Name = "txtBoxDescript";
-            this.txtBoxDescript.Size = new System.Drawing.Size(174, 127);
+            this.txtBoxDescript.Size = new System.Drawing.Size(273, 185);
             this.txtBoxDescript.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 15);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 13);
+            this.label1.Size = new System.Drawing.Size(75, 18);
             this.label1.TabIndex = 2;
             this.label1.Text = "Название";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 71);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(12, 65);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 13);
+            this.label2.Size = new System.Drawing.Size(76, 18);
             this.label2.TabIndex = 3;
             this.label2.Text = "Описание";
             // 
             // btnAccess
             // 
-            this.btnAccess.Location = new System.Drawing.Point(111, 227);
+            this.btnAccess.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnAccess.Location = new System.Drawing.Point(187, 278);
             this.btnAccess.Name = "btnAccess";
-            this.btnAccess.Size = new System.Drawing.Size(75, 23);
+            this.btnAccess.Size = new System.Drawing.Size(98, 23);
             this.btnAccess.TabIndex = 4;
             this.btnAccess.Text = "Потвердить";
             this.btnAccess.UseVisualStyleBackColor = true;
@@ -82,14 +87,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(200, 262);
+            this.ClientSize = new System.Drawing.Size(297, 313);
             this.Controls.Add(this.btnAccess);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtBoxDescript);
             this.Controls.Add(this.txtBoxName);
             this.Name = "AddListsDescription";
-            this.Text = "AddListsDescription";
+            this.Text = "Диагнозы";
             this.Load += new System.EventHandler(this.AddListsDescription_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

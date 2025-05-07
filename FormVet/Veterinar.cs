@@ -75,10 +75,13 @@ namespace WindowsFormsApp4
 
         private void ExitsMain_Click(object sender, EventArgs e)
         {
-            DialogResult d = MessageBox.Show("", "", MessageBoxButtons.YesNoCancel);
-            Atorisation a = new Atorisation();
-            a.Show();
-            this.Hide();
+            DialogResult d = MessageBox.Show("Уверены", "Уверены что хотите выйти из аккаунта?", MessageBoxButtons.YesNoCancel);
+            if (d == DialogResult.Yes)
+            {
+                Atorisation a = new Atorisation();
+                a.Show();
+                this.Hide();
+            }
         }
         private async void UpdateRecord()
         {
@@ -95,6 +98,24 @@ namespace WindowsFormsApp4
                     break;
                 default:
                     return;
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            var value = textBoxSearch.Text.Trim();
+            int cnt = 0, numRow = 0;
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+                var row = dataGridView1.Rows[i];
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    if (row.Cells[j].Value.ToString().Contains(value))
+                    {
+                        row.Selected = true;
+                        cnt++; numRow = i;
+                        break;
+
+                    }
             }
         }
     }

@@ -33,7 +33,7 @@ namespace WindowsFormsApp4
         private async void AddDiagnosis_Click(object sender, EventArgs e)
         {
             await _connectionManager.ConnectionOpen();
-            await mySQLQerty.AddDiagnosisPet(_connectionManager.GetConnection(), NameDiagnosis, str);
+            await mySQLQerty.AddDiagnosisPet(_connectionManager.GetConnection(), NameDiagnosis, str, dateTimePicker1.Value);
             mySQLQerty.ShowDataGrid_DiagnosisPet(_connectionManager.GetConnection(), str, dataGridView1);
             await _connectionManager.ConnectionClose();
         }
